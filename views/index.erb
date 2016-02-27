@@ -1,0 +1,7 @@
+<p> Available locales: <%= FastGettext.available_locales.sort.join(",") %></p>
+<p> Some messages in <%= FastGettext.locale %>:</p>
+<ul>
+<% @messages.each do |m| %>
+  <li> <%= m %> </li>
+<% end %>
+</ul>
