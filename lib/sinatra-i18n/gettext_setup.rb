@@ -37,7 +37,6 @@ module GettextSetup
     end.sort_by do |(locale,qvalue)|
       qvalue.to_f
     end.select do |(locale,_)|
-      puts FastGettext.available_locales.include?(locale)
       FastGettext.available_locales.include?(locale)
     end.last.first
   end
@@ -59,7 +58,5 @@ module GettextSetup
 
   # Likewise, be explicit in our default language choice.
   FastGettext.default_locale = default_locale
-
-  FastGettext.available_locales = locales
-
+  FastGettext.default_available_locales = locales
 end
