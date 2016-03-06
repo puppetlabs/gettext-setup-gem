@@ -7,6 +7,8 @@ working. The `/` route will show some messages in the locale that best fits
 your `Accept-Language` header (additional translations most welcome !) The
 `/show` route will just report the negotiated locale.
 
+This project sets the default locale to English. If the user has set a different locale in their browser preferences, and we support the user's preferred locale, strings and data formatting will be customized for that locale.
+
 ## Setup for your project
 
 These are the poingant bits of this example that you need to replicate in
