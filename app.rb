@@ -14,7 +14,7 @@ class HelloWorldApp < Sinatra::Base
        _("Hello, world!"),
        # Translators need to know some details about the city here
        # So we explain it in a comment
-       _("There are %{count} bicycles in %{city}") % {count: 1000000, city: "Beijing"},
+       n_("There is %{count} bicycle in %{city}", "There are %{count} bicycles in %{city}") % {count: 1, city: "Beijing"},
        _("We negotiated a locale of %{locale}") % {locale: FastGettext.locale}]
     erb :index
   end

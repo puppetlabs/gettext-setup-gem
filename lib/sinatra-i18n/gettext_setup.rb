@@ -53,7 +53,8 @@ module GettextSetup
   # machine format, etc.
   FastGettext.add_text_domain(config['project_name'],
                               :path => locales_path,
-                              :type => :po)
+                              :type => :po,
+                              :ignore_fuzzy => true)
   FastGettext.default_text_domain = config['project_name']
 
   # Likewise, be explicit in our default language choice.

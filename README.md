@@ -26,20 +26,59 @@ directory there.
 1. Add a `before` filter to your project that mirrors the `before` filter
 in `app.rb`
 
-### Writing translatable code
+## Writing translatable code
 
-Please read the [fast_gettext](https://github.com/grosser/fast_gettext)
-documentation on the details of using the various translation functions it
-provides, such as `_` and `n_`.
+### Use full sentences
+Write user-facing strings as full sentences rather than concatenating fragments of a sentence because the word order in other languages can be different to English. See [Tips on writing translation-friendly strings](https://confluence.puppetlabs.com/display/ENG/Tips+for+writing+translation-friendly+strings).
+
+### Wrap strings in the translation function _()
+Wrap user-facing strings in the `_()` function so they can be externalized to a POT file. E.g.  `_("Hello, world!")`
+
+### Use sprintf interpolation to add dynamic data
+To add dynamic data to user-facing strings, use sprintf interpolation.
+E.g. `_("We negotiated a locale of %{locale}") % {locale: FastGettext.locale}]`
+
+### Wrap strings containing pluralization in the translation function n_()
+
+Wrap strings that include pluralization with the `n_()` function.
+E.g. `n_("There is %{count} bicycle in %{city}","There are %{count} bicycles in %{city}",3) % {count: 1000000, city: "Beijing"},`
+TODO: Check how to pluralize the string in the ruby file
+
+Pluralization rules vary across languages. The pluralization rules are specified in the PO file and look something like this `Plural-Forms: nplurals=2; plural=(n > 1);`.
+
+Plurals are selected from the PO file by index. Here's an example of how a
+pluralized string is handled in a PO file:
+
+    msgid "%{count} file"
+    msgid_plural "%{count} files"
+    msgstr[0] "%{count} Datei"
+    msgstr[1] "%{count} Dateien"
+
+### Comments
 
 Frequently, e.g., before making a pull request, you should regenerate the
 message catalog in `locales/<project_name>.pot` by running `rake
 gettext:pot`
 
+## Translation workflow
+
+1. Wrap the translation function around translatable strings in code files
+
+2. Run `rake gettext:find` to parse the source code and extract translatable strings into a POT file
+
+3. Run `rake gettext:po[<lang>]` to create/update language-specific PO files (Note: This step will be managed by the localization team)
+
+4. PE checks the user's locale. If we support the preferred locale, PE uses the PO file for that locale. Otherwise, it uses the default locale (en_US).
+
+## Terminology
+
+Translatable strings - user-facing strings that are in scope for i18n (see ??)
+POT file - Portable Objects Template.
+PO file - A bilingual file containing the source English strings and target language strings
+Transifex - A translation management system. When PO files are updated, the updates are pulled into Transifex and translated there.
+
 You can create and/or update translations for specific languages, which
-live in `locales/<lang>/<project_name>.po` with the Rake task `rake
-gettext:po[<lang>]`. This should generally only be done in coordination
-with a translator.
+live in `locales/<lang>/<project_name>.po` with the Rake task `rake gettext:po[<lang>]`. This should generally only be done in coordination with a translator.
 
 ## TODO
 
