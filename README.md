@@ -4,7 +4,7 @@ This is a sample project demonstrating the very basics of doing i18n for a
 [Sinatra](www.sinatrarb.com/) web app. It is fully functional, and you
 should be able to just do `bundle install && rackup` to get things
 working. The `/` route will show some messages in the locale that best fits
-your `Accept-Language` header (additional translations most welcome !) The
+your `Accept-Language` header (additional translations most welcome!) The
 `/show` route will just report the negotiated locale.
 
 This project sets the default locale to English. If the user has set a different locale in their browser preferences, and we support the user's preferred locale, strings and data formatting will be customized for that locale.
@@ -32,17 +32,21 @@ in `app.rb`
 Write user-facing strings as full sentences rather than concatenating fragments of a sentence because the word order in other languages can be different to English. See [Tips on writing translation-friendly strings](https://confluence.puppetlabs.com/display/ENG/Tips+for+writing+translation-friendly+strings).
 
 ### Wrap strings in the translation function _()
-Wrap user-facing strings in the `_()` function so they can be externalized to a POT file. E.g.  `_("Hello, world!")`
+Wrap user-facing strings in the `_()` function so they can be externalized to a POT file.
+
+E.g.  `_("Hello, world!")`
 
 ### Use sprintf interpolation to add dynamic data
-To add dynamic data to user-facing strings, use sprintf interpolation.
-E.g. `_("We negotiated a locale of %{locale}") % {locale: FastGettext.locale}]`
 
-### Wrap strings containing pluralization in the translation function n_()
+To add dynamic data to user-facing strings, use sprintf interpolation.
+E.g. `_("We negotiated a locale of %{locale}") % {locale:
+FastGettext.locale}]`
+
+### Pluralize with the n_() function
 
 Wrap strings that include pluralization with the `n_()` function.
-E.g. `n_("There is %{count} bicycle in %{city}","There are %{count} bicycles in %{city}",3) % {count: 1000000, city: "Beijing"},`
-TODO: Check how to pluralize the string in the ruby file
+
+E.g. `n_("There is %{count} bicycle in %{city}", "There are %{count} bicycles in %{city}") % {count: 1, city: "Beijing"},`
 
 Pluralization rules vary across languages. The pluralization rules are specified in the PO file and look something like this `Plural-Forms: nplurals=2; plural=(n > 1);`.
 
