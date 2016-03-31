@@ -50,7 +50,7 @@ To add dynamic data to a string, use the following string formatting and transla
 
 Wrap strings that include pluralization with the `n_()` function.
 
-E.g. `n_("There is %{count} bicycle in %{city}", "There are %{count} bicycles in %{city}") % {count: 1, city: "Beijing"},`
+E.g. `n_("There is %{count} bicycle in %{city}", "There are %{count} bicycles in %{city}", num_bikes) % {count: num_bikes, city: "Beijing"},`
 
 Pluralization rules vary across languages. The pluralization rules are specified in the PO file and look something like this `Plural-Forms: nplurals=2; plural=(n > 1);`. This is the pluralization rule for German. It means that German has two pluralization rules. The first rule is `plural=n > 1)` and the second rule is all other counts.
 
