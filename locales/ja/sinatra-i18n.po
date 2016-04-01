@@ -1,4 +1,4 @@
-# German translations for Sinatra i18n demo package.
+# Japanese translations for Sinatra i18n demo package.
 # Copyright (C) 2016 Puppet Labs, LLC.
 # This file is distributed under the same license as the Sinatra i18n demo package.
 # Automatically generated, 2016.
@@ -11,15 +11,15 @@ msgstr ""
 "PO-Revision-Date: 2016-02-26 18:21-0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: de\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../app.rb:14
 msgid "Hello, world!"
-msgstr "Hallo, Welt!"
+msgstr "Hello, world!"
 
 #. Translators need to know some details about the city here
 #. So we explain it in a comment
@@ -27,9 +27,8 @@ msgstr "Hallo, Welt!"
 #, fuzzy
 msgid "There is %{count} bicycle in %{city}"
 msgid_plural "There are %{count} bicycles in %{city}"
-msgstr[0] "In %{city} gibt es %{count} Fahrräder"
-msgstr[1] "In %{city} gibt es %{count} Fahrräder"
+msgstr[0] "%{city}では%{count}の自転車があります。"
 
 #: ../app.rb:18
 msgid "We negotiated a locale of %{locale}"
-msgstr "Wir benutzen die Sprache %{locale}"
+msgstr "ロケールとして%{locale}を交渉しました。"
