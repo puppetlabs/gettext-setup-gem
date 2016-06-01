@@ -1,6 +1,6 @@
-# sinatra-i18n
+# gettext-setup gem
 
-This is a sample project demonstrating the very basics of doing i18n for Ruby projects (including [Sinatra](www.sinatrarb.com/) web apps) using gettext and fast gettext. It is fully functional, and you should be able to just do `bundle install && rackup` to get things working. The `/` route will show some messages in the locale that best fits your `Accept-Language` header (additional translations most welcome!) The `/show` route will just report the negotiated locale.
+This is a simple gem to set up i18n for Ruby projects (including [Sinatra](www.sinatrarb.com/) web apps) using gettext and fast gettext.
 
 This project sets the default locale to English. If the user has set a different locale in their browser preferences, and we support the user's preferred locale, strings and data formatting will be customized for that locale.
 
@@ -19,17 +19,29 @@ This project sets the default locale to English. If the user has set a different
 These are the poingant bits of this example that you need to replicate in
 your project:
 
-1. Add `gem 'fast_gettext'` to your `Gemfile`
-1. Add `gem 'gettext'` to your `Gemfile` in the `:development` group
-1. Copy `lib/sinatra-i18n/gettext_setup.rb` into your project
-1. Copy `locales/config.yaml` to your project and put it into the `locales`
-directory there.
+1. Add `gem 'gettext-setup'` to your `Gemfile`.
+1. Add `gem 'fast_gettext'` to your `Gemfile`. This line is only needed
+   for running the bundled `rake` task.
+1. Copy `locales/config-sample.yaml` to your project and put it into a
+`locales` directory as `config.yaml`.
 1. Edit `locales/config.yaml` and make the necessary changes for your
    project
-1. Copy `lib/tasks/gettext.rake` into your project and include it in your
-   `Rakefile` the same way this project's `Rakefile` does
-1. Add a `before` filter to your project that mirrors the `before` filter
-in `app.rb`
+1. Add these three lines to your `Rakefile`:
+```
+    spec = Gem::Specification.find_by_name 'gettext-setup'
+    load "#{spec.gem_dir}/lib/tasks/gettext.rake"
+    GettextSetup.initialize(File.absolute_path('locales', File.dirname(__FILE__)))
+```
+1. Add this line to the top of your `app.rb`:
+    `require 'gettext-setup'`
+1. Add these lines inside the class declared in your `app.rb`:
+```
+    include FastGettext::Translation
+    GettextSetup.initialize(File.absolute_path('locales', File.dirname(__FILE__)))
+    before do
+      FastGettext.locale = GettextSetup.negotiate_locale(env["HTTP_ACCEPT_LANGUAGE"])
+    end
+```
 
 ## Writing translatable code
 
