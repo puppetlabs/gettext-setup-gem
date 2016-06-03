@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'sinatra'
 gem 'fast_gettext'
 
 gem 'rake', :require => false

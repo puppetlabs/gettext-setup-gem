@@ -1,4 +1,13 @@
+# require 'bundler'
+# puts File.absolute_path('Gemfile', Dir.pwd)
+# Bundler.read_file(File.absolute_path('Gemfile', Dir.pwd))
+#
+require_relative '../gettext-setup/gettext_setup'
+#
+# GettextSetup.initialize(File.absolute_path('locales', Dir.pwd))
+
 namespace :gettext do
+
   def locale_path
     GettextSetup.locales_path
   end
@@ -21,13 +30,16 @@ namespace :gettext do
   task :pot do
     package_name = GettextSetup.config['package_name']
     project_name = GettextSetup.config['project_name']
+    bugs_address = GettextSetup.config['bugs_address']
+    copyright_holder = GettextSetup.config['copyright_holder']
     version=`git describe`
     system("rxgettext -o locales/#{project_name}.pot --no-wrap --sort-by-file " +
-           "--add-comments --msgid-bugs-address 'docs@puppetlabs.com' " +
+           "--add-comments --msgid-bugs-address '#{bugs_address}' " +
            "--package-name '#{package_name}' " +
            "--package-version '#{version}' " +
-           "--copyright-holder='Puppet Labs, LLC.' --copyright-year=2016 " +
+           "--copyright-holder='#{copyright_holder}' --copyright-year=#{Time.now.year} " +
            "#{files_to_translate.join(" ")}")
+    puts "POT file locales/#{project_name}.pot has been updated"
   end
 
   desc "Update po file for a specific language"
