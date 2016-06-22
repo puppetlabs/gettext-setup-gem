@@ -1,12 +1,9 @@
 source 'https://rubygems.org'
 
 gem 'fast_gettext'
+gem 'gettext', ">= 3.0.2"
 
 gem 'rake', :require => false
-
-group :development do
-  gem 'gettext', ">= 3.0.2"
-end
 
 group :test do
   gem 'rack-test'
