@@ -20,8 +20,6 @@ These are the poingant bits of this example that you need to replicate in
 your project:
 
 1. Add `gem 'gettext-setup'` to your `Gemfile`.
-1. Add `gem 'fast_gettext'` to your `Gemfile`. This line is only needed
-   for running the bundled `rake` task.
 1. Copy `locales/config-sample.yaml` to your project and put it into a
 `locales` directory as `config.yaml`.
 1. Edit `locales/config.yaml` and make the necessary changes for your
