@@ -34,7 +34,7 @@ namespace :gettext do
     copyright_holder = GettextSetup.config['copyright_holder']
     version=`git describe`
     system("rxgettext -o locales/#{project_name}.pot --no-wrap --sort-by-file " +
-           "--add-comments --msgid-bugs-address '#{bugs_address}' " +
+           "--no-location --add-comments --msgid-bugs-address '#{bugs_address}' " +
            "--package-name '#{package_name}' " +
            "--package-version '#{version}' " +
            "--copyright-holder='#{copyright_holder}' --copyright-year=#{Time.now.year} " +
