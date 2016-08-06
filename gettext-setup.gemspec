@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.description   = "A gem to ease i18n"
   spec.summary       = "A gem to ease internationalization with fast_gettext"
   spec.homepage      = "https://github.com/puppetlabs/gettext-setup-gem"
-  spec.license       = "ASL2"
+  spec.license       = "Apache-2.0"
 
   spec.files         = `git ls-files`.split($/)
   spec.test_files    = spec.files.grep(%r{^spec/})
