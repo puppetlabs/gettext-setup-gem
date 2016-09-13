@@ -12,8 +12,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/puppetlabs/gettext-setup-gem"
   spec.license       = "Apache-2.0"
 
-  spec.files         = `git ls-files`.split($/)
-  spec.test_files    = spec.files.grep(%r{^spec/})
+  spec.files         = Dir["{lib,locales,spec}/**/*", "LICENSE", "README.md"]
+  spec.test_files    = Dir["spec/**/*"]
   spec.require_paths = ["lib"]
 
   spec.add_dependency "gettext", ">= 3.0.2"
