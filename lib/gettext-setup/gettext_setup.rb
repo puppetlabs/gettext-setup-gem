@@ -9,7 +9,10 @@ module GettextSetup
   # - config.yaml
   # - a .pot file for the project
   # - i18n directories for languages, each with a .po file
-  def self.initialize(locales_path)
+  # - if using .mo files, an LC_MESSAGES dir in each language dir, with the .mo file in it
+  # valid `options` fields:
+  # :file_format - one of the supported backends for fast_gettext (e.g. :po, :mo, :yaml, etc.)
+  def self.initialize(locales_path, options = {})
     config_path = File.absolute_path('config.yaml', locales_path)
     @@config = YAML.load_file(config_path)['gettext']
     @@locales_path = locales_path
@@ -20,13 +23,9 @@ module GettextSetup
     # Define our text domain, and set the path into our root.  I would prefer to
     # have something smarter, but we really want this up earlier even than our
     # config loading happens so that errors there can be translated.
-    #
-    # We use the PO files directly, since it works about as efficiently with
-    # fast_gettext, and avoids all the extra overhead of compilation down to
-    # machine format, etc.
     FastGettext.add_text_domain(config['project_name'],
                                 :path => locales_path,
-                                :type => :po,
+                                :type => options[:file_format] || :po,
                                 :ignore_fuzzy => false)
     FastGettext.default_text_domain = config['project_name']
 
