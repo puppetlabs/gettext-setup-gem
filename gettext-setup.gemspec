@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "gettext-setup"
-  spec.version       = "0.7"
+  spec.version       = "0.8"
   spec.authors       = ["Puppet"]
   spec.email         = ["info@puppet.com"]
   spec.description   = "A gem to ease i18n"
