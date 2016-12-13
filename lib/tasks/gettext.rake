@@ -17,9 +17,15 @@ namespace :gettext do
   end
 
   def files_to_translate
-    GettextSetup.config['source_files'].map do |p|
+    files = GettextSetup.config['source_files'].map do |p|
       Dir.glob(p)
     end.flatten
+    # check for optional list of files to exclude from string
+    # extraction
+    exclusions = (GettextSetup.config['exclude_files'] || []).map do |p|
+      Dir.glob(p)
+    end.flatten
+    files - exclusions
   end
 
   def pot_file_path
