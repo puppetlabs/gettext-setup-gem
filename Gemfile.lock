@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    gettext-setup (0.6)
-      fast_gettext (~> 1.1.0)
+    gettext-setup (0.9)
+      fast_gettext (~> 1.1)
       gettext (>= 3.0.2)
 
 GEM
@@ -61,6 +61,3 @@ DEPENDENCIES
   rspec-mocks (~> 3.1)
   simplecov
   webmock
-
-BUNDLED WITH
-   1.12.5
