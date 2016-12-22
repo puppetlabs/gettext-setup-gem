@@ -12,11 +12,11 @@ This project sets the default locale to English. If the user has set a different
 
 **PO file** - A bilingual file containing the source English strings (msgid) and target language strings (msgstr). This file is generated from the POT file and is where translated strings are added. A PO file is generated for each language.
 
-**Transifex** - A translation management system. When PO files are updated, the updates are pulled into Transifex and translated there.
+**Transifex** - A translation management system. When POT files are updated, the updates are pushed to Transifex. Transifex generates a PO file for each language that has been set up in the Transifex project. Translators enter the string translations in the PO for their language.
 
 ## Setup for your project
 
-These are the poingant bits of this example that you need to replicate in
+These are the poignant bits of this example that you need to replicate in
 your project:
 
 1. Add `gem 'gettext-setup'` to your `Gemfile`.
@@ -78,26 +78,21 @@ The `msgid_plural` is the plural version of the English source string.
 
 The two `msgstr` lines show that German has two rules for pluralization. The indices map to the `Plural-Forms: nplurals=2; plural=(n > 1);` rule that we specified in the PO file. The `[0]` index represents `plural=(n > 1)` and the `[1]` index represents all other pluralization cases (in other words, when the count equals 0 or 1).
 
-### Comments
-To provide translators with some contextual information or instructions about a string, precede the string with a comment. Start the comment with "TRANSLATOR: " to make it obvious that you are providing instructions for the translator. The comment gets pulled in to the POT file and will show up as a comment in Transifex.
+When Transifex generates a PO file for a specific language, it automatically adds the appropriate pluralization rules in the PO file. 
 
-E.g. `# TRANSLATOR: The placeholder in this string represents the name of a parameter.`
+### Comments
+To provide translators with some contextual information or instructions about a string, precede the string with a comment using `#. `. The comment gets pulled in to the POT file and will show up as a comment in Transifex.
+
+E.g. `#. The placeholder in this string represents the name of a parameter.`
 
 ## Translation workflow
 
 1. Wrap the translation function around translatable strings in code files
 
-2. Run `rake gettext:pot` to parse the source code and extract translatable strings into the message catalog in `locales/<project_name>.pot`. If a POT file already exists, this rake task will update the POT file. Do this before making a pull request that includes changes to user-facing strings.
+2. A CI job checks code commits to see if any changes have been made to user-facing strings. If changes have been made, the CI job parses the source code and extracts translatable strings into a POT file. If a POT file already exists, the CI job will update the existing POT file. (If the CI job hasn't already been added to your pipeline, you will need to add it.)
 
-3. Run `rake gettext:po[<lang>]` to create/update language-specific PO files. This step will be managed by the localization team, and will usually happen prior to a new release.
+3. When a POT file is updated, the Transifex webhook pushes the new POT file to Transifex ready for translation. (If your POT file hasn't been added to the Transifex integration yet, you will need to get it added.)
 
-4. When a PO file is updated, a git hook is used to automatically pull the new/updated strings into Transifex ready for translation.
+4. When a PO file reaches 100% translated and reviewed, a webhook pushes it back to the source repo ready to be consumed by your app. 
 
-5. When the PO file reaches 100% translated and reviewed in Transifex, it is pulled back into the locale folder.
-
-6. PE checks the user's locale settings (the browser settings for web apps, or the system settings for the CLI). If we support the preferred locale, PE uses the PO file for that locale. Otherwise, it uses the default locale (en_US).
-
-## TODO
-
-1. Locale-specific formatting of numbers, dates, etc.
-2. Separate out the locales that are supported for testing/dev and production so we can add test translations without shipping them.
+5. Your app checks the user's locale settings (the browser settings for web apps, or the system settings for the CLI). If we support the user's preferred locale, the app will display strings in the user's language. Otherwise, it defaults to English.
