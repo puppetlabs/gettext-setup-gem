@@ -34,13 +34,20 @@ namespace :gettext do
 
   desc "Update pot files"
   task :pot do
-    package_name = GettextSetup.config['package_name']
-    project_name = GettextSetup.config['project_name']
-    bugs_address = GettextSetup.config['bugs_address']
-    copyright_holder = GettextSetup.config['copyright_holder']
+    config = GettextSetup.config
+    package_name = config['package_name']
+    project_name = config['project_name']
+    bugs_address = config['bugs_address']
+    copyright_holder = config['copyright_holder']
+    # Done this way to allow the user to enter an empty string in the config.
+    if config.has_key?('comments_tag')
+      comments_tag = config['comments_tag']
+    else
+      comments_tag = 'TRANSLATORS'
+    end
     version=`git describe`
     system("rxgettext -o locales/#{project_name}.pot --no-wrap --sort-by-file " +
-           "--no-location --add-comments --msgid-bugs-address '#{bugs_address}' " +
+           "--no-location --add-comments#{comments_tag.to_s == '' ? '' : '=' + comments_tag} --msgid-bugs-address '#{bugs_address}' " +
            "--package-name '#{package_name}' " +
            "--package-version '#{version}' " +
            "--copyright-holder='#{copyright_holder}' --copyright-year=#{Time.now.year} " +
