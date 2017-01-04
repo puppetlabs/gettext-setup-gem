@@ -15,6 +15,10 @@ gettext:
   bugs_address: docs@puppetlabs.com
   # The holder of the copyright.
   copyright_holder: Puppet Labs, LLC.
+  # This determines which comments in code should be eligible for translation.
+  # Any comments that start with this string will be externalized. (Leave
+  # empty to include all.)
+  comments_tag: TRANSLATORS
   # Patterns for +Dir.glob+ used to find all files that might contain
   # translatable content, relative to the project root directory
   source_files:
