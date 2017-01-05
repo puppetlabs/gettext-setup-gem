@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 require 'fast_gettext'
 require 'yaml'
+require 'locale'
 
 module GettextSetup
   @@config = nil
@@ -32,6 +33,8 @@ module GettextSetup
     # Likewise, be explicit in our default language choice.
     FastGettext.default_locale = default_locale
     FastGettext.default_available_locales = locales
+
+    Locale.set_default(default_locale)
   end
 
   def self.locales_path
@@ -44,6 +47,12 @@ module GettextSetup
 
   def self.default_locale
     config['default_locale'] || "en"
+  end
+
+  # Returns the locale for the current machine. This is most useful for shell
+  # applications that need an ACCEPT-LANGUAGE header set.
+  def self.candidate_locales
+    Locale.candidates(type: :cldr).join(',')
   end
 
   def self.locales
