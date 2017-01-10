@@ -32,8 +32,7 @@ namespace :gettext do
     File.join(locale_path, GettextSetup.config['project_name'] + ".pot")
   end
 
-  desc "Update pot files"
-  task :pot do
+  def generate_new_pot
     config = GettextSetup.config
     package_name = config['package_name']
     project_name = config['project_name']
@@ -52,10 +51,34 @@ namespace :gettext do
            "--package-version '#{version}' " +
            "--copyright-holder='#{copyright_holder}' --copyright-year=#{Time.now.year} " +
            "#{files_to_translate.join(" ")}")
-    puts "POT file locales/#{project_name}.pot has been updated"
   end
 
-  desc "Update po file for a specific language"
+  desc "Generate a new POT file and replace old if strings changed"
+  task :update_pot do
+    if !File.exists? pot_file_path
+      puts "No existing POT file, generating new"
+      generate_new_pot
+    else
+      old_pot = pot_file_path + ".old"
+      File.rename(pot_file_path, old_pot)
+      generate_new_pot
+      if system("msgcmp --use-untranslated '#{old_pot}' '#{pot_file_path}'")
+        puts "No string changes detected, keeping old POT file"
+        File.rename(old_pot, pot_file_path)
+      else
+        File.delete(old_pot)
+        puts "String changes detected, replacing with updated POT file"
+      end
+    end
+  end
+
+  desc "Generate POT file"
+  task :pot do
+    generate_new_pot
+    puts "POT file #{pot_file_path} has been generated"
+  end
+
+  desc "Update PO file for a specific language"
   task :po, [:language] do |_, args|
     language = args.language || ENV["LANGUAGE"]
 
