@@ -61,6 +61,10 @@ module GettextSetup
     Locale.candidates(type: :cldr).join(',')
   end
 
+  def self.clear
+    Locale.clear
+  end
+
   def self.locales
     explicit = Dir.glob(File::absolute_path('*/*.po', locales_path)).map do |x|
       File::basename(File::dirname(x))

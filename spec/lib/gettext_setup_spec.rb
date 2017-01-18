@@ -42,4 +42,13 @@ describe GettextSetup do
       expect(GettextSetup.default_locale).to eq('de')
     end
   end
+  context 'clear' do
+    it "can clear the locale" do
+      expect(GettextSetup.default_locale).to eq('en')
+      expect(GettextSetup.candidate_locales).to eq('en_US,en')
+      GettextSetup.clear
+      ENV['LANG'] = 'de_DE'
+      expect(GettextSetup.candidate_locales).to eq('de_DE,de,en')
+    end
+  end
 end
