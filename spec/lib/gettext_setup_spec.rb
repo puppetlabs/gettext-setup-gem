@@ -32,4 +32,14 @@ describe GettextSetup do
       expect(GettextSetup.negotiate_locale('en;q=1, de;q=0')).to eq('en')
     end
   end
+  context 'set_default_locale' do
+    before :each do
+      GettextSetup.set_default_locale('en')
+    end
+    it 'allows setting the default locale' do
+      expect(GettextSetup.default_locale).to eq('en')
+      GettextSetup.set_default_locale('de')
+      expect(GettextSetup.default_locale).to eq('de')
+    end
+  end
 end

@@ -42,11 +42,17 @@ module GettextSetup
   end
 
   def self.config
-    @@config
+    @@config ||= {}
   end
 
   def self.default_locale
     config['default_locale'] || "en"
+  end
+
+  def self.set_default_locale(new_locale)
+    FastGettext.default_locale = new_locale
+    Locale.set_default(new_locale)
+    config['default_locale'] = new_locale
   end
 
   # Returns the locale for the current machine. This is most useful for shell
