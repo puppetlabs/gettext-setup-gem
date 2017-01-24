@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gettext-setup (0.12)
+    gettext-setup (0.13)
       fast_gettext (~> 1.1.0)
       gettext (>= 3.0.2)
       locale
