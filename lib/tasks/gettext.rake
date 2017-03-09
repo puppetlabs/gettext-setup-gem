@@ -2,6 +2,7 @@
 # puts File.absolute_path('Gemfile', Dir.pwd)
 # Bundler.read_file(File.absolute_path('Gemfile', Dir.pwd))
 #
+require 'open3'
 require_relative '../gettext-setup/gettext_setup'
 #
 # GettextSetup.initialize(File.absolute_path('locales', Dir.pwd))
