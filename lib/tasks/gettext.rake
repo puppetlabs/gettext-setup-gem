@@ -26,7 +26,10 @@ namespace :gettext do
     exclusions = (GettextSetup.config['exclude_files'] || []).map do |p|
       Dir.glob(p)
     end.flatten
-    files - exclusions
+
+    # if file is a directory, take it out of the array. directories
+    # cause rxgettext to error out.
+    (files - exclusions).reject { |file| File.directory?(file) }
   end
 
   def pot_file_path
