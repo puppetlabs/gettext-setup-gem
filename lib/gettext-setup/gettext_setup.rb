@@ -5,6 +5,7 @@ require 'locale'
 
 module GettextSetup
   @@config = nil
+  FastGettext.default_available_locales = [Locale.current.language]
 
   # `locales_path` should include:
   # - config.yaml
@@ -19,7 +20,7 @@ module GettextSetup
     @@locales_path = locales_path
 
     # Make the translation methods available everywhere
-    Object.send(:include, FastGettext::Translation)
+    Object.send(:include, FastGettext::Translation, FastGettext::TranslationMultidomain)
 
     # Define our text domain, and set the path into our root.  I would prefer to
     # have something smarter, but we really want this up earlier even than our
@@ -32,8 +33,7 @@ module GettextSetup
 
     # Likewise, be explicit in our default language choice.
     FastGettext.default_locale = default_locale
-    FastGettext.default_available_locales = locales
-
+    FastGettext.default_available_locales = FastGettext.default_available_locales | locales
     Locale.set_default(default_locale)
   end
 
