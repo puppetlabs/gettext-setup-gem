@@ -51,4 +51,19 @@ describe GettextSetup do
       expect(GettextSetup.candidate_locales).to eq('de_DE,de,en')
     end
   end
+  context 'multiple locales' do
+    # locales/ loads the de locale and alt_locales/ loads the jp locale
+    before(:all) do
+      GettextSetup.initialize(File::join(File::dirname(File::dirname(__FILE__)), 'fixtures', 'alt_locales'))
+    end
+    it 'can aggregate locales across projects' do
+      expect(FastGettext.default_available_locales).to include('en','de','jp')
+    end
+    it 'can switch to loaded locale' do
+      FastGettext.locale = GettextSetup.negotiate_locale('de')
+      expect(FastGettext.locale).to eq('de')
+      FastGettext.locale = GettextSetup.negotiate_locale('jp')
+      expect(FastGettext.locale).to eq('jp')
+    end
+  end
 end

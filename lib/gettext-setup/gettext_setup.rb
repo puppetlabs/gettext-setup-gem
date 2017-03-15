@@ -5,6 +5,7 @@ require 'locale'
 
 module GettextSetup
   @@config = nil
+  FastGettext.default_available_locales = []
 
   # `locales_path` should include:
   # - config.yaml
@@ -32,7 +33,7 @@ module GettextSetup
 
     # Likewise, be explicit in our default language choice.
     FastGettext.default_locale = default_locale
-    FastGettext.default_available_locales = locales
+    FastGettext.default_available_locales = FastGettext.default_available_locales | locales
 
     Locale.set_default(default_locale)
   end
