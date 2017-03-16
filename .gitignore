@@ -1,2 +1,8 @@
-.bundle/*
+# local bundle gem dir
+.bundle/
+
+# should not be included in a gem
 Gemfile.lock
+
+# rspec coverage report
+coverage/
