@@ -29,5 +29,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec-mocks", "~> 3.1"
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "webmock"
+  spec.add_development_dependency "rubocop"
 
 end

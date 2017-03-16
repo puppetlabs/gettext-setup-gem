@@ -1,0 +1,15 @@
+language: ruby
+sudo: false
+before_install:
+  - gem install bundler -v 1.10
+script:
+  - "bundle exec $CHECK"
+notifications:
+  email: false
+rvm:
+  - 2.1.9
+  - 2.3.3
+
+env:
+  - "CHECK='rspec spec'"
+  - "CHECK=rubocop"

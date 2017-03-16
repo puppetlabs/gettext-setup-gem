@@ -1,0 +1,41 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Include:
+    - 'lib/**/*.rb'
+  Exclude:
+    - 'spec/**/*'
+
+Style/Documentation:
+  Enabled: false
+
+# Line length is not useful
+Metrics/LineLength:
+  Enabled: false
+
+
+# Due to legacy codebase
+#   - Globals are used liberally
+Style/GlobalVars:
+  Enabled: false
+#   - A lot of complexity
+Metrics/AbcSize:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
+#   - Long Methods, Classes, Blocks, and Modules
+Metrics/MethodLength:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+Metrics/ModuleLength:
+  Enabled: false
+
+
+# Either sytnax for regex is ok
+Style/RegexpLiteral:
+  Enabled: false
