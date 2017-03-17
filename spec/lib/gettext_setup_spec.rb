@@ -66,4 +66,30 @@ describe GettextSetup do
       expect(FastGettext.locale).to eq('jp')
     end
   end
+  context 'translation repository chain' do
+    before(:all) do
+      GettextSetup.initialize(File::join(File::dirname(File::dirname(__FILE__)), 'fixtures', 'alt_locales'))
+    end
+    it 'chain is not nil' do
+      expect(GettextSetup.translation_repositories).not_to be_nil
+    end
+    it 'can translate without switching text domains' do
+      FastGettext.locale = "de"
+      expect(_('Hello, world!')).to eq('Hallo, Welt!')
+      FastGettext.locale = "jp"
+      expect(_('Hello, world!')).to eq('こんにちは世界')
+    end
+    it 'does not allow duplicate repositories' do
+      GettextSetup.initialize(File::join(File::dirname(File::dirname(__FILE__)), 'fixtures', 'alt_locales'))
+      repos = GettextSetup.translation_repositories
+      expect(repos.select { |k,v| k == 'alt_locales' }.size).to eq(1)
+    end
+    it 'does allow multiple unique domains' do
+      GettextSetup.initialize(File::join(File::dirname(File::dirname(__FILE__)), 'fixtures', 'locales'))
+      repos = GettextSetup.translation_repositories
+      expect(repos.size) == 2
+      expect(repos.select { |k,v| k == 'alt_locales' }.size).to eq(1)
+      expect(repos.select { |k,v| k == 'sinatra-i18n' }.size).to eq(1)
+    end
+  end
 end
