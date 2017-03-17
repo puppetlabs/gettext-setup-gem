@@ -66,13 +66,18 @@ namespace :gettext do
       old_pot = pot_file_path + ".old"
       File.rename(pot_file_path, old_pot)
       generate_new_pot
-      stdout, stderr, status = Open3.capture3("msgcmp --use-untranslated '#{old_pot}' '#{pot_file_path}'")
-      if status == 1 || /this message is not used/.match(stderr)
+      begin
+        _, stderr, status = Open3.capture3("msgcmp --use-untranslated '#{old_pot}' '#{pot_file_path}'")
+        if status == 1 || /this message is not used/.match(stderr)
+          File.delete(old_pot)
+          puts "String changes detected, replacing with updated POT file"
+        else
+          puts "No string changes detected, keeping old POT file"
+          File.rename(old_pot, pot_file_path)
+        end
+      rescue IOError
+        # Ignore; probably means msgcmp isn't installed.
         File.delete(old_pot)
-        puts "String changes detected, replacing with updated POT file"
-      else
-        puts "No string changes detected, keeping old POT file"
-        File.rename(old_pot, pot_file_path)
       end
     end
   end
