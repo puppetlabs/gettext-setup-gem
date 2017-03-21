@@ -101,12 +101,12 @@ module GettextSetup
       pair[0] = FastGettext.default_locale if pair[0] == '*'
       pair
     end.sort_by do |(locale,qvalue)|
-      qvalue.to_f
+      -1 * qvalue.to_f
     end.select do |(locale,_)|
       FastGettext.available_locales.include?(locale)
     end
-    if available_locales and available_locales.last
-      available_locales.last.first
+    if available_locales and available_locales.first
+      available_locales.first.first
     else
       # We can't satisfy the request preference. Just use the default locale.
       default_locale

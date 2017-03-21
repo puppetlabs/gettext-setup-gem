@@ -31,6 +31,9 @@ describe GettextSetup do
       expect(GettextSetup.negotiate_locale('en;q=1, de;q=2')).to eq('de')
       expect(GettextSetup.negotiate_locale('en;q=1, de;q=0')).to eq('en')
     end
+    it "chooses the first value when q values are equal" do
+      expect(GettextSetup.negotiate_locale('de;q=1, en;q=1')).to eq('de')
+    end
   end
   context 'set_default_locale' do
     before :each do
@@ -60,7 +63,7 @@ describe GettextSetup do
       expect(FastGettext.default_available_locales).to include('en','de','jp')
     end
     it 'can switch to loaded locale' do
-      FastGettext.locale = GettextSetup.negotiate_locale('de')
+      FastGettext.locale = GettextSetup.negotiate_locale('de,en')
       expect(FastGettext.locale).to eq('de')
       FastGettext.locale = GettextSetup.negotiate_locale('jp')
       expect(FastGettext.locale).to eq('jp')
