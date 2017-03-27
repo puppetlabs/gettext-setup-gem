@@ -50,7 +50,7 @@ namespace :gettext do
     end
     version=`git describe`
     system("rxgettext -o locales/#{project_name}.pot --no-wrap --sort-by-file " +
-           "--no-location --add-comments#{comments_tag.to_s == '' ? '' : '=' + comments_tag} --msgid-bugs-address '#{bugs_address}' " +
+           "--add-comments#{comments_tag.to_s == '' ? '' : '=' + comments_tag} --msgid-bugs-address '#{bugs_address}' " +
            "--package-name '#{package_name}' " +
            "--package-version '#{version}' " +
            "--copyright-holder='#{copyright_holder}' --copyright-year=#{Time.now.year} " +
