@@ -11,8 +11,8 @@ namespace :bundler do
   end
 end
 
-desc "Update i18n POT translations"
-task :"spec-regen" do
+desc 'Update i18n POT translations'
+task :'spec-regen' do
   require 'rake'
   GettextSetup.initialize(File.absolute_path(File.join('spec', 'fixtures', 'locales'), File.dirname(__FILE__)))
   Dir.chdir('spec/fixtures')
@@ -29,7 +29,7 @@ if defined?(RSpec::Core::RakeTask)
     puts 'running'
 
     desc 'Run all specs.'
-    RSpec::Core::RakeTask.new(:all => :"bundler:setup") do |t|
+    RSpec::Core::RakeTask.new(all: 'bundler:setup') do |t|
       puts "iterating: #{t}"
       t.pattern = 'spec/**/*_spec.rb'
     end
