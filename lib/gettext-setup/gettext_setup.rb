@@ -1,11 +1,12 @@
 # -*- encoding: utf-8 -*-
+
 require 'fast_gettext'
 require 'yaml'
 require 'locale'
 
 module GettextSetup
-  @@config = nil
-  @@translation_repositories = {}
+  @config = nil
+  @translation_repositories = {}
   FastGettext.default_available_locales = []
 
   # `locales_path` should include:
@@ -17,8 +18,8 @@ module GettextSetup
   # :file_format - one of the supported backends for fast_gettext (e.g. :po, :mo, :yaml, etc.)
   def self.initialize(locales_path, options = {})
     config_path = File.absolute_path('config.yaml', locales_path)
-    @@config = YAML.load_file(config_path)['gettext']
-    @@locales_path = locales_path
+    @config = YAML.load_file(config_path)['gettext']
+    @locales_path = locales_path
 
     # Make the translation methods available everywhere
     Object.send(:include, FastGettext::Translation)
@@ -30,7 +31,7 @@ module GettextSetup
 
     # 'chain' is the only available multi-domain type in fast_gettext 1.1.0 We should consider
     # investigating 'merge' once we can bump our dependency
-    FastGettext.add_text_domain('master_domain', type: :chain, chain: @@translation_repositories.values)
+    FastGettext.add_text_domain('master_domain', type: :chain, chain: @translation_repositories.values)
     FastGettext.default_text_domain = 'master_domain'
 
     # Likewise, be explicit in our default language choice.
@@ -40,31 +41,31 @@ module GettextSetup
     Locale.set_default(default_locale)
   end
 
-  def self.add_repository_to_chain(project_name,options)
+  def self.add_repository_to_chain(project_name, options)
     repository = FastGettext::TranslationRepository.build(project_name,
-                                                          :path => locales_path,
-                                                          :type => options[:file_format] || :po,
-                                                          :ignore_fuzzy => false)
-    @@translation_repositories[project_name] = repository unless @@translation_repositories.key? project_name
+                                                          path: locales_path,
+                                                          type: options[:file_format] || :po,
+                                                          ignore_fuzzy: false)
+    @translation_repositories[project_name] = repository unless @translation_repositories.key? project_name
   end
 
   def self.locales_path
-    @@locales_path
+    @locales_path
   end
 
   def self.config
-    @@config ||= {}
+    @config ||= {}
   end
 
   def self.translation_repositories
-    @@translation_repositories
+    @translation_repositories
   end
 
   def self.default_locale
-    config['default_locale'] || "en"
+    config['default_locale'] || 'en'
   end
 
-  def self.set_default_locale(new_locale)
+  def self.default_locale=(new_locale)
     FastGettext.default_locale = new_locale
     Locale.set_default(new_locale)
     config['default_locale'] = new_locale
@@ -81,31 +82,31 @@ module GettextSetup
   end
 
   def self.locales
-    explicit = Dir.glob(File::absolute_path('*/*.po', locales_path)).map do |x|
-      File::basename(File::dirname(x))
+    explicit = Dir.glob(File.absolute_path('*/*.po', locales_path)).map do |x|
+      File.basename(File.dirname(x))
     end
-    (explicit + [ default_locale]).uniq
+    (explicit + [default_locale]).uniq
   end
 
   # Given an HTTP Accept-Language header return the locale with the highest
   # priority from it for which we have a locale available. If none exists,
   # return the default locale
   def self.negotiate_locale(accept_header)
-    unless @@config
-      raise ArgumentError, "No config.yaml found! Use `GettextSetup.initialize(locales_path)` to locate your config.yaml"
+    unless @config
+      raise ArgumentError, 'No config.yaml found! Use `GettextSetup.initialize(locales_path)` to locate your config.yaml'
     end
     return FastGettext.default_locale if accept_header.nil?
-    available_locales = accept_header.split(",").map do |locale|
+    available_locales = accept_header.split(',').map do |locale|
       pair = locale.strip.split(';q=')
       pair << '1.0' unless pair.size == 2
       pair[0] = FastGettext.default_locale if pair[0] == '*'
       pair
-    end.sort_by do |(locale,qvalue)|
+    end.sort_by do |(_, qvalue)|
       -1 * qvalue.to_f
-    end.select do |(locale,_)|
+    end.select do |(locale, _)|
       FastGettext.available_locales.include?(locale)
     end
-    if available_locales and available_locales.first
+    if available_locales && available_locales.first
       available_locales.first.first
     else
       # We can't satisfy the request preference. Just use the default locale.

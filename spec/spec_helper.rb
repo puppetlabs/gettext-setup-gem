@@ -1,6 +1,6 @@
 require 'simplecov'
 SimpleCov.start do
-  add_filter "/spec/"
+  add_filter '/spec/'
 end
 
-require_relative '../lib/gettext-setup'
+require_relative '../lib/gettext_setup'
