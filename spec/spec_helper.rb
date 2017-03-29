@@ -3,4 +3,4 @@ SimpleCov.start do
   add_filter '/spec/'
 end
 
-require_relative '../lib/gettext_setup'
+require_relative '../lib/gettext-setup'
