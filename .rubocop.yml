@@ -34,3 +34,7 @@ Style/RegexpLiteral:
 # Intermediate variables are not always helpful
 Style/MultilineBlockChain:
   Enabled: false
+
+Style/FileName:
+  Exclude:
+    - 'lib/gettext-setup.rb'
