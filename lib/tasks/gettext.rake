@@ -4,6 +4,7 @@
 #
 require_relative '../gettext-setup/gettext_setup'
 require_relative 'task_helper.rb'
+require_relative '../metadata_pot/metadata_pot'
 #
 # GettextSetup.initialize(File.absolute_path('locales', Dir.pwd))
 
@@ -31,6 +32,12 @@ namespace :gettext do
   task :pot do
     generate_new_pot
     puts "POT file #{pot_file_path} has been generated"
+  end
+
+  desc 'Generate POT file for metadata'
+  task :generate_metadata_pot do
+    generate_new_pot_metadata
+    puts "POT file #{metadata_pot_file_path} has been generated"
   end
 
   desc 'Update PO file for a specific language'
