@@ -63,7 +63,9 @@ namespace :gettext do
       generate_new_pot
       begin
         _, stderr, status = Open3.capture3("msgcmp --use-untranslated '#{old_pot}' '#{pot_file_path}'")
-        if status == 1 || /this message is not used/.match(stderr)
+        if status == 1 ||
+          /this message is not used/.match(stderr) || # strings have been deleted
+          /this message is used but not defined/.match(stderr) # strings have been added
           File.delete(old_pot)
           puts 'String changes detected, replacing with updated POT file'
         else
