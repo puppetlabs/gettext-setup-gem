@@ -3,4 +3,10 @@ SimpleCov.start do
   add_filter '/spec/'
 end
 
-require_relative '../lib/gettext-setup'
+def msgcmp_present?
+  # Try to call out to msgcmp, if it doesn't error, we have the tool
+  `msgcmp`
+  return true
+rescue IOError
+  return false
+end
