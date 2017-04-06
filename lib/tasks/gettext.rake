@@ -2,56 +2,12 @@
 # puts File.absolute_path('Gemfile', Dir.pwd)
 # Bundler.read_file(File.absolute_path('Gemfile', Dir.pwd))
 #
-require 'open3'
 require_relative '../gettext-setup/gettext_setup'
+require_relative 'task_helper.rb'
 #
 # GettextSetup.initialize(File.absolute_path('locales', Dir.pwd))
 
 namespace :gettext do
-  def locale_path
-    GettextSetup.locales_path
-  end
-
-  def text_domain
-    FastGettext.text_domain
-  end
-
-  def files_to_translate
-    files = GettextSetup.config['source_files'].map do |p|
-      Dir.glob(p)
-    end.flatten
-    # check for optional list of files to exclude from string
-    # extraction
-    exclusions = (GettextSetup.config['exclude_files'] || []).map do |p|
-      Dir.glob(p)
-    end.flatten
-
-    # if file is a directory, take it out of the array. directories
-    # cause rxgettext to error out.
-    (files - exclusions).reject { |file| File.directory?(file) }
-  end
-
-  def pot_file_path
-    File.join(locale_path, GettextSetup.config['project_name'] + '.pot')
-  end
-
-  def generate_new_pot
-    config = GettextSetup.config
-    package_name = config['package_name']
-    project_name = config['project_name']
-    bugs_address = config['bugs_address']
-    copyright_holder = config['copyright_holder']
-    # Done this way to allow the user to enter an empty string in the config.
-    comments_tag = config.key?('comments_tag') ? config['comments_tag'] : 'TRANSLATORS'
-    version = `git describe`
-    system("rxgettext -o locales/#{project_name}.pot --no-wrap --sort-by-file " \
-           "--add-comments#{comments_tag.to_s == '' ? '' : '=' + comments_tag} --msgid-bugs-address '#{bugs_address}' " \
-           "--package-name '#{package_name}' " \
-           "--package-version '#{version}' " \
-           "--copyright-holder='#{copyright_holder}' --copyright-year=#{Time.now.year} " +
-           files_to_translate.join(' '))
-  end
-
   desc 'Generate a new POT file and replace old if strings changed'
   task :update_pot do
     if !File.exist? pot_file_path
@@ -61,20 +17,12 @@ namespace :gettext do
       old_pot = pot_file_path + '.old'
       File.rename(pot_file_path, old_pot)
       generate_new_pot
-      begin
-        _, stderr, status = Open3.capture3("msgcmp --use-untranslated '#{old_pot}' '#{pot_file_path}'")
-        if status == 1 ||
-          /this message is not used/.match(stderr) || # strings have been deleted
-          /this message is used but not defined/.match(stderr) # strings have been added
-          File.delete(old_pot)
-          puts 'String changes detected, replacing with updated POT file'
-        else
-          puts 'No string changes detected, keeping old POT file'
-          File.rename(old_pot, pot_file_path)
-        end
-      rescue IOError
-        # Ignore; probably means msgcmp isn't installed.
+      if string_changes?(old_pot, pot_file_path)
         File.delete(old_pot)
+        puts 'String changes detected, replacing with updated POT file'
+      else
+        puts 'No string changes detected, keeping old POT file'
+        File.rename(old_pot, pot_file_path)
       end
     end
   end

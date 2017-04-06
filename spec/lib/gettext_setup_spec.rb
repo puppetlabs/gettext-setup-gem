@@ -1,6 +1,8 @@
 require 'rspec/expectations'
 require_relative '../spec_helper'
 
+require_relative '../../lib/gettext-setup'
+
 describe GettextSetup do
   before(:each) do
     GettextSetup.initialize(File.join(File.dirname(File.dirname(__FILE__)), 'fixtures', 'locales'))
@@ -50,8 +52,13 @@ describe GettextSetup do
       expect(GettextSetup.default_locale).to eq('en')
       expect(GettextSetup.candidate_locales).to include('en')
       GettextSetup.clear
-      ENV['LANG'] = 'de_DE'
-      expect(GettextSetup.candidate_locales).to eq('de_DE,de,en')
+      begin
+        old_locale = ENV['LANG']
+        ENV['LANG'] = 'de_DE'
+        expect(GettextSetup.candidate_locales).to eq('de_DE,de,en')
+      ensure
+        ENV['LANG'] = old_locale
+      end
     end
   end
   context 'multiple locales' do
