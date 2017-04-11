@@ -38,8 +38,3 @@ Style/MultilineBlockChain:
 Style/FileName:
   Exclude:
     - 'lib/gettext-setup.rb'
-
-Style/IndentHeredoc:
-  Exclude:
-    - 'lib/metadata_pot/metadata_pot.rb'
-
