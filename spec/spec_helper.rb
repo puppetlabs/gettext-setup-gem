@@ -5,7 +5,7 @@ end
 
 def msgcmp_present?
   # Try to call out to msgcmp, if it doesn't error, we have the tool
-  `msgcmp`
+  `msgcmp --version`
   return true
 rescue IOError
   return false

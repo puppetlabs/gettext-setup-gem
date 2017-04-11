@@ -12,7 +12,6 @@ describe GettextSetup do
   end
   context 'initialize' do
     it 'sets up correctly' do
-      # GettextSetup.initialize(File.join(File.dirname(File.dirname(__FILE__)), 'fixtures'))
       expect(GettextSetup.locales_path).to match(/\/spec\/fixtures/)
       expect(config['project_name']).to eq('sinatra-i18n')
       expect(config['package_name']).to eq('Sinatra i18n demo')
