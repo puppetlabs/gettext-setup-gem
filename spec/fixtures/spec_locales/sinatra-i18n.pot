@@ -6,11 +6,11 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Sinatra i18n demo 0.21-4-geccdac4\n"
+"Project-Id-Version: Sinatra i18n demo 0.21-6-gc301398\n"
 "\n"
 "Report-Msgid-Bugs-To: docs@puppetlabs.com\n"
-"POT-Creation-Date: 2017-04-11 20:08-0500\n"
-"PO-Revision-Date: 2017-04-11 20:08-0500\n"
+"POT-Creation-Date: 2017-04-12 00:27-0500\n"
+"PO-Revision-Date: 2017-04-12 00:27-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,22 +19,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../../lib/gettext_setup_spec.rb:26 ../../lib/gettext_setup_spec.rb:89 ../../lib/gettext_setup_spec.rb:91
+#: ../../lib/gettext_setup_spec.rb:26 ../../lib/gettext_setup_spec.rb:89 ../../lib/gettext_setup_spec.rb:91 ../fixture_locales/test_strings.rb:1
 msgid "Hello, world!"
 msgstr ""
 
-#: ../../lib/pot_spec.rb:52
+#: ../../lib/pot_spec.rb:91
 msgid "merged-po-file"
 msgstr ""
 
-#: ../../lib/pot_spec.rb:74
+#: ../../lib/pot_spec.rb:117
 msgid "no-pot-file"
 msgstr ""
 
-#: ../../lib/pot_spec.rb:85
+#: ../../lib/pot_spec.rb:127
 msgid "some-spec-only-string"
 msgstr ""
 
-#: ../../lib/pot_spec.rb:104
+#: ../../lib/pot_spec.rb:144
 msgid "unchanged-string"
 msgstr ""

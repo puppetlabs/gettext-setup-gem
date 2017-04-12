@@ -4,11 +4,11 @@
 gettext:
   # This is used for the name of the .pot and .po files; they will be
   # called <project_name>.pot?
-  project_name: 'alt_locales'
+  project_name: 'sinatra-i18n'
   # This is used in comments in the .pot and .po files to indicate what
   # project the files belong to and should bea little more desctiptive than
   # <project_name>
-  package_name: alt_locales
+  package_name: Sinatra i18n demo
   # The locale that the default messages in the .pot file are in
   default_locale: en
   # The email used for sending bug reports.
@@ -18,5 +18,4 @@ gettext:
   # Patterns for +Dir.glob+ used to find all files that might contain
   # translatable content, relative to the project root directory
   source_files:
-    - 'test_translation.rb'
-    - '../lib/**/*.rb'
+    - 'spec/**/*.rb'

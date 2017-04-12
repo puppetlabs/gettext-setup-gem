@@ -5,6 +5,12 @@ require 'yaml'
 require 'locale'
 
 module GettextSetup
+  class NoConfigFoundError < RuntimeError
+    def initialize(path)
+      super("No config.yaml found! (searching: #{path})")
+    end
+  end
+
   @config = nil
   @translation_repositories = {}
   FastGettext.default_available_locales = []
@@ -16,8 +22,10 @@ module GettextSetup
   # - if using .mo files, an LC_MESSAGES dir in each language dir, with the .mo file in it
   # valid `options` fields:
   # :file_format - one of the supported backends for fast_gettext (e.g. :po, :mo, :yaml, etc.)
-  def self.initialize(locales_path, options = {})
+  def self.initialize(locales_path = 'locales', options = {})
     config_path = File.absolute_path('config.yaml', locales_path)
+    File.exist?(config_path) || raise(NoConfigFoundError, config_path)
+
     @config = YAML.load_file(config_path)['gettext']
     @locales_path = locales_path
 
@@ -41,6 +49,11 @@ module GettextSetup
     Locale.set_default(default_locale)
   end
 
+  def self.config?
+    raise NoConfigFoundError, File.join(locales_path, 'config.yaml') unless @config
+    @config
+  end
+
   def self.add_repository_to_chain(project_name, options)
     repository = FastGettext::TranslationRepository.build(project_name,
                                                           path: locales_path,
@@ -50,7 +63,7 @@ module GettextSetup
   end
 
   def self.locales_path
-    @locales_path
+    @locales_path ||= File.join(Dir.pwd, 'locales')
   end
 
   def self.config

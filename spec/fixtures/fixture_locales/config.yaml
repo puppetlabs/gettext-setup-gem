@@ -4,19 +4,18 @@
 gettext:
   # This is used for the name of the .pot and .po files; they will be
   # called <project_name>.pot?
-  project_name: 'sinatra-i18n'
+  project_name: 'fixture_locales'
   # This is used in comments in the .pot and .po files to indicate what
   # project the files belong to and should bea little more desctiptive than
   # <project_name>
-  package_name: Sinatra i18n demo
+  package_name: Fixture locales
   # The locale that the default messages in the .pot file are in
   default_locale: en
   # The email used for sending bug reports.
   bugs_address: docs@puppetlabs.com
   # The holder of the copyright.
-  copyright_holder: Puppet Labs, LLC.
+  copyright_holder: Puppet, LLC.
   # Patterns for +Dir.glob+ used to find all files that might contain
   # translatable content, relative to the project root directory
   source_files:
-    - 'lib/**/*.rb'
-    - 'spec/**/*.rb'
+  - 'spec/fixtures/fixture_locales/*.rb'
