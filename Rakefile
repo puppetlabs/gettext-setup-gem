@@ -12,7 +12,7 @@ namespace :bundler do
 end
 
 desc 'Update i18n POT translations'
-task :'spec-regen' do
+task :spec_regen do
   %w(spec_locales fixture_locales locales).each do |locale|
     locale_path = File.join(File.dirname(__FILE__), 'spec', 'fixtures', locale)
     puts "-> Checking #{locale_path}"
