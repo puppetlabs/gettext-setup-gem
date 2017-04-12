@@ -2,6 +2,7 @@
 
 require 'erb'
 require 'json'
+require 'English'
 
 module GettextSetup
   module MetadataPot
@@ -31,6 +32,7 @@ module GettextSetup
       open(path, 'w') do |f|
         f << pot_string(pot_metadata)
       end
+      $CHILD_STATUS.exitstatus.zero?
     end
   end
 end

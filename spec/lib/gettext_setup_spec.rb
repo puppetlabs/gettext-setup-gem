@@ -61,9 +61,9 @@ describe GettextSetup do
     end
   end
   context 'multiple locales' do
-    # locales/ loads the de locale and alt_locales/ loads the jp locale
+    # locales/ loads the de locale and fixture_locales/ loads the jp locale
     before(:all) do
-      GettextSetup.initialize(File.join(File.dirname(File.dirname(__FILE__)), 'fixtures', 'alt_locales'))
+      GettextSetup.initialize(File.join(File.dirname(File.dirname(__FILE__)), 'fixtures', 'fixture_locales'))
     end
     it 'can aggregate locales across projects' do
       expect(FastGettext.default_available_locales).to include('en')
@@ -79,7 +79,7 @@ describe GettextSetup do
   end
   context 'translation repository chain' do
     before(:all) do
-      GettextSetup.initialize(File.join(File.dirname(File.dirname(__FILE__)), 'fixtures', 'alt_locales'))
+      GettextSetup.initialize(File.join(File.dirname(File.dirname(__FILE__)), 'fixtures', 'fixture_locales'))
     end
     it 'chain is not nil' do
       expect(GettextSetup.translation_repositories).not_to be_nil
@@ -91,15 +91,15 @@ describe GettextSetup do
       expect(_('Hello, world!')).to eq('こんにちは世界')
     end
     it 'does not allow duplicate repositories' do
-      GettextSetup.initialize(File.join(File.dirname(File.dirname(__FILE__)), 'fixtures', 'alt_locales'))
+      GettextSetup.initialize(File.join(File.dirname(File.dirname(__FILE__)), 'fixtures', 'fixture_locales'))
       repos = GettextSetup.translation_repositories
-      expect(repos.select { |k, _| k == 'alt_locales' }.size).to eq(1)
+      expect(repos.select { |k, _| k == 'fixture_locales' }.size).to eq(1)
     end
     it 'does allow multiple unique domains' do
       GettextSetup.initialize(File.join(File.dirname(File.dirname(__FILE__)), 'fixtures', 'locales'))
       repos = GettextSetup.translation_repositories
       expect(repos.size == 2)
-      expect(repos.select { |k, _| k == 'alt_locales' }.size).to eq(1)
+      expect(repos.select { |k, _| k == 'fixture_locales' }.size).to eq(1)
       expect(repos.select { |k, _| k == 'sinatra-i18n' }.size).to eq(1)
     end
   end

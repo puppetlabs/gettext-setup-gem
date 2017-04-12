@@ -35,6 +35,10 @@ Style/RegexpLiteral:
 Style/MultilineBlockChain:
   Enabled: false
 
+# Either syntax is ok
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
 Style/FileName:
   Exclude:
     - 'lib/gettext-setup.rb'
