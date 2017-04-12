@@ -28,7 +28,7 @@ namespace :gettext do
   end
 
   desc 'Generate POT file for metadata'
-  task :generate_metadata_pot do
+  task :metadata_pot do
     begin
       result = GettextSetup::MetadataPot.generate_metadata_pot
       if result
