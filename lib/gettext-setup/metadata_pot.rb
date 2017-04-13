@@ -2,7 +2,6 @@
 
 require 'erb'
 require 'json'
-require 'English'
 
 module GettextSetup
   module MetadataPot
@@ -15,10 +14,12 @@ module GettextSetup
     end
 
     def self.metadata(metadata_file = 'metadata.json')
-      @metadata ||= begin
+      if File.exist?(metadata_file)
         file = open(metadata_file)
         json = file.read
         JSON.parse(json)
+      else
+        {}
       end
     end
 
@@ -32,7 +33,6 @@ module GettextSetup
       open(path, 'w') do |f|
         f << pot_string(pot_metadata)
       end
-      $CHILD_STATUS.exitstatus.zero?
     end
   end
 end

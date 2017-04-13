@@ -40,6 +40,10 @@ describe GettextSetup::MetadataPot do
         expect(metadata).to eq('description' => 'abcdef', 'summary' => 'ghi')
       end
     end
+    it 'uses an empty hash if no metadata.json is found' do
+      metadata = GettextSetup::MetadataPot.metadata(File.join(Dir.mktmpdir, 'metadata.json').to_s)
+      expect(metadata).to eq({})
+    end
   end
   context '#generate_metadata_pot' do
     it 'works with everything supplied' do

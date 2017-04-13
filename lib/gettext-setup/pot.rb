@@ -66,7 +66,7 @@ module GettextSetup
              "--package-version '#{version}' " \
              "--copyright-holder='#{copyright_holder}' --copyright-year=#{Time.now.year} " +
              files_to_translate.join(' '))
-      $CHILD_STATUS.exitstatus.zero?
+      $CHILD_STATUS.success?
     end
 
     def self.generate_new_po(language, locales_path = GettextSetup.locales_path,
@@ -89,8 +89,8 @@ module GettextSetup
       if File.exist?(po_file)
         cmd = "msgmerge -U #{po_file} #{pot_file}"
         _, _, _, wait = Open3.popen3(cmd)
-        wait.value
-        if $CHILD_STATUS.exitstatus.zero?
+        exitstatus = wait.value
+        if exitstatus.success?
           puts "PO file #{po_file} merged"
           true
         else
@@ -100,8 +100,8 @@ module GettextSetup
       else
         cmd = "msginit --no-translator -l #{language} -o #{po_file} -i #{pot_file}"
         _, _, _, wait = Open3.popen3(cmd)
-        wait.value
-        if $CHILD_STATUS.exitstatus.zero?
+        exitstatus = wait.value
+        if exitstatus.success?
           puts "PO file #{po_file} created"
           true
         else
