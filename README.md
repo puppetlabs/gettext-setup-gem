@@ -36,11 +36,11 @@ your project:
     `GettextSetup.initialize(File.absolute_path('locales', File.dirname(__FILE__)))`
     (Note that the second line may require modification to find the `locales` directory.
 1. For client-side applications, add this line:
-    `FastGettext.locale = GettextSetup.negotiate_locale(GettextSetup.candidate_locales)`
+    `GettextSetup.negotiate_locale!(GettextSetup.candidate_locales)`
 1. For server-side applications, add these lines:
 ```
     before do
-      FastGettext.locale = GettextSetup.negotiate_locale(env["HTTP_ACCEPT_LANGUAGE"])
+      GettextSetup.negotiate_locale!(env["HTTP_ACCEPT_LANGUAGE"])
     end
 ```
 

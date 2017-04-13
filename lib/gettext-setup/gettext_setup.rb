@@ -126,4 +126,9 @@ module GettextSetup
       default_locale
     end
   end
+
+  # Negotiates and sets the locale based on an accept language header.
+  def self.negotiate_locale!(accept_header)
+    FastGettext.locale = negotiate_locale(accept_header)
+  end
 end
