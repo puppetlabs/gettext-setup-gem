@@ -119,18 +119,22 @@ module GettextSetup
         puts 'No existing POT file, generating new'
         result = GettextSetup::Pot.generate_new_pot(locales_path, path)
         puts "POT file #{path} has been generated" if result
+        result
       else
         old_pot = path + '.old'
         File.rename(path, old_pot)
         result = GettextSetup::Pot.generate_new_pot(locales_path, path)
         if !result
           puts 'POT creation failed'
+          result
         elsif GettextSetup::Pot.string_changes?(old_pot, path)
-          File.delete(old_pot)
           puts 'String changes detected, replacing with updated POT file'
+          File.delete(old_pot)
+          true
         else
           puts 'No string changes detected, keeping old POT file'
           File.rename(old_pot, path)
+          true
         end
       end
     end

@@ -6,3 +6,6 @@ Gemfile.lock
 
 # rspec coverage report
 coverage/
+
+# these will change each spec test run
+spec/fixtures/tmp_locales
