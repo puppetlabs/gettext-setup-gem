@@ -1,11 +1,11 @@
 require 'rspec/expectations'
-require_relative '../spec_helper'
+require_relative '../../spec_helper'
 
-require_relative '../../lib/gettext-setup'
+require_relative '../../../lib/gettext-setup'
 
 describe GettextSetup::MetadataPot do
   before(:each) do
-    GettextSetup.initialize(File.join(File.dirname(File.dirname(__FILE__)), 'fixtures', 'locales'))
+    GettextSetup.initialize(File.absolute_path(File.join(File.dirname(__FILE__), '../../fixtures/locales')))
   end
   context '#metadata_path' do
     it 'finds the right metadata path' do

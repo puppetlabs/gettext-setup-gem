@@ -1,11 +1,14 @@
 require 'rspec/expectations'
-require_relative '../spec_helper'
+require_relative '../../spec_helper'
 
-require_relative '../../lib/gettext-setup'
+require_relative '../../../lib/gettext-setup'
 
 describe GettextSetup do
+  locales_path = File.absolute_path(File.join(File.dirname(__FILE__), '../../fixtures/locales'))
+  fixture_locales_path = File.absolute_path(File.join(File.dirname(__FILE__), '../../fixtures/fixture_locales'))
+
   before(:each) do
-    GettextSetup.initialize(File.join(File.dirname(File.dirname(__FILE__)), 'fixtures', 'locales'))
+    GettextSetup.initialize(locales_path)
   end
   let(:config) do
     GettextSetup.config
@@ -73,7 +76,7 @@ describe GettextSetup do
   context 'multiple locales' do
     # locales/ loads the de locale and fixture_locales/ loads the jp locale
     before(:all) do
-      GettextSetup.initialize(File.join(File.dirname(File.dirname(__FILE__)), 'fixtures', 'fixture_locales'))
+      GettextSetup.initialize(fixture_locales_path)
     end
     it 'can aggregate locales across projects' do
       expect(FastGettext.default_available_locales).to include('en')
@@ -89,7 +92,7 @@ describe GettextSetup do
   end
   context 'translation repository chain' do
     before(:all) do
-      GettextSetup.initialize(File.join(File.dirname(File.dirname(__FILE__)), 'fixtures', 'fixture_locales'))
+      GettextSetup.initialize(fixture_locales_path)
     end
     it 'chain is not nil' do
       expect(GettextSetup.translation_repositories).not_to be_nil
@@ -101,12 +104,12 @@ describe GettextSetup do
       expect(_('Hello, world!')).to eq('こんにちは世界')
     end
     it 'does not allow duplicate repositories' do
-      GettextSetup.initialize(File.join(File.dirname(File.dirname(__FILE__)), 'fixtures', 'fixture_locales'))
+      GettextSetup.initialize(fixture_locales_path)
       repos = GettextSetup.translation_repositories
       expect(repos.select { |k, _| k == 'fixture_locales' }.size).to eq(1)
     end
     it 'does allow multiple unique domains' do
-      GettextSetup.initialize(File.join(File.dirname(File.dirname(__FILE__)), 'fixtures', 'locales'))
+      GettextSetup.initialize(locales_path)
       repos = GettextSetup.translation_repositories
       expect(repos.size == 2)
       expect(repos.select { |k, _| k == 'fixture_locales' }.size).to eq(1)

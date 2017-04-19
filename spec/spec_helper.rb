@@ -26,12 +26,3 @@ end
 def msgmerge_present?
   cmd_present?('msgmerge')
 end
-
-def with_captured_stdout
-  old_stdout = $stdout
-  $stdout = StringIO.new('', 'w')
-  yield
-  $stdout.string
-ensure
-  $stdout = old_stdout
-end

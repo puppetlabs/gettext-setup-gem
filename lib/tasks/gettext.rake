@@ -9,9 +9,11 @@ namespace :gettext do
 
   task :update_pot do
     begin
-      GettextSetup::Pot.update_pot
+      result = GettextSetup::Pot.update_pot
+      exit 1 unless result
     rescue GettextSetup::NoConfigFoundError => e
       puts e.message
+      exit 1
     end
   end
 
@@ -21,6 +23,8 @@ namespace :gettext do
       result = GettextSetup::Pot.generate_new_pot
       if result
         puts "POT file #{GettextSetup::Pot.pot_file_path} has been generated"
+      else
+        exit 1
       end
     rescue GettextSetup::NoConfigFoundError => e
       puts e.message
@@ -33,6 +37,8 @@ namespace :gettext do
       result = GettextSetup::MetadataPot.generate_metadata_pot
       if result
         puts "POT metadata file #{GettextSetup::MetadataPot.metadata_path} has been generated"
+      else
+        exit 1
       end
     rescue GettextSetup::NoConfigFoundError => e
       puts e.message
@@ -42,7 +48,8 @@ namespace :gettext do
   desc 'Update PO file for a specific language'
   task :po, [:language] do |_, args|
     begin
-      GettextSetup::Pot.generate_new_po(args.language)
+      result = GettextSetup::Pot.generate_new_po(args.language)
+      exit 1 unless result
     rescue GettextSetup::NoConfigFoundError => e
       puts e.message
     end
