@@ -2,10 +2,11 @@
 
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'gettext-setup/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'gettext-setup'
-  spec.version       = `git describe --tags`.tr('-', '.').chomp
+  spec.version       = GettextSetup::VERSION
   spec.authors       = ['Puppet']
   spec.email         = ['info@puppet.com']
   spec.description   = 'A gem to ease i18n'
