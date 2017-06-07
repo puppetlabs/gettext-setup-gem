@@ -112,6 +112,10 @@ module GettextSetup
     available_locales = accept_header.split(',').map do |locale|
       pair = locale.strip.split(';q=')
       pair << '1.0' unless pair.size == 2
+      # Ignore everything but the language itself; that means that we treat
+      # 'de' and 'de-DE' identical, and would use the 'de' message catalog
+      # for both.
+      pair[0] = pair[0].split('-')[0]
       pair[0] = FastGettext.default_locale if pair[0] == '*'
       pair
     end.sort_by do |(_, qvalue)|
