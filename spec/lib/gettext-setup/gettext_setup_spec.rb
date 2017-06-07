@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'rspec/expectations'
 require_relative '../../spec_helper'
 
@@ -34,6 +35,10 @@ describe GettextSetup do
     it 'chooses the language with the highest q value' do
       expect(GettextSetup.negotiate_locale('en;q=1, de;q=2')).to eq('de')
       expect(GettextSetup.negotiate_locale('en;q=1, de;q=0')).to eq('en')
+    end
+    it 'ignores country variant' do
+      expect(GettextSetup.negotiate_locale('en;q=1, de-DE;q=2')).to eq('de')
+      expect(GettextSetup.negotiate_locale('en;q=1, de-DE;q=0')).to eq('en')
     end
     it 'chooses the first value when q values are equal' do
       expect(GettextSetup.negotiate_locale('de;q=1, en;q=1')).to eq('de')
