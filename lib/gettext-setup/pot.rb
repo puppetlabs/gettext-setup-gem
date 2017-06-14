@@ -72,10 +72,9 @@ module GettextSetup
     def self.generate_new_po(language, locales_path = GettextSetup.locales_path,
                              pot_file = nil, po_file = nil)
       GettextSetup.initialize(locales_path)
+      language ||= ENV['LANGUAGE']
       pot_file ||= GettextSetup::Pot.pot_file_path
       po_file ||= GettextSetup::Pot.po_file_path(language)
-
-      language ||= ENV['LANGUAGE']
 
       # Let's do some pre-verification of the environment.
       if language.nil?
