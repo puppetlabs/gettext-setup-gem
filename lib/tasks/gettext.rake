@@ -3,6 +3,7 @@
 require_relative '../gettext-setup/gettext_setup'
 require_relative '../gettext-setup/pot'
 require_relative '../gettext-setup/metadata_pot'
+require_relative '../string_prep/ruby_wrapper'
 
 namespace :gettext do
   desc 'Generate a new POT file and replace old if strings changed'
@@ -44,6 +45,15 @@ namespace :gettext do
       puts e.message
     end
   end
+
+  desc "Run string wrapper against all Ruby files in a module"
+  task :wrap_ruby_string do
+    begin
+      dir = GettextSetup.config['project_name']
+      exec("../string_prep/ruby_wrapper.rb #{dir}")
+    end
+  end
+
 
   desc 'Update PO file for a specific language'
   task :po, [:language] do |_, args|
