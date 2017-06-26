@@ -45,6 +45,14 @@ namespace :gettext do
     end
   end
 
+  desc 'Run string_wrapper.rb against all Ruby files within a module'
+  task :wrap_ruby_string do
+    begin
+      script_dir = File.expand_path('../string_prep/string_wrapper.rb', File.dirname(__FILE__))
+      system("ruby-rewrite -m --load #{script_dir} .")
+    end
+  end
+
   desc 'Update PO file for a specific language'
   task :po, [:language] do |_, args|
     begin
