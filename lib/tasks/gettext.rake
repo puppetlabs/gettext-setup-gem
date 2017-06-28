@@ -54,4 +54,12 @@ namespace :gettext do
       puts e.message
     end
   end
+
+  desc 'Run interpolation_extractor.rb against all Ruby files within a module'
+  task :interpolate_ruby_string do
+    begin
+      script_dir = File.expand_path('../string_prep/interpolation_extractor.rb', File.dirname(__FILE__))
+      system("ruby-rewrite -m --load #{script_dir} .")
+    end
+  end
 end
