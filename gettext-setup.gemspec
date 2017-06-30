@@ -22,6 +22,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'fast_gettext', '~> 1.1.0'
   spec.add_dependency 'gettext', '>= 3.0.2'
   spec.add_dependency 'locale'
+  spec.add_dependency 'ast'
+  spec.add_dependency 'parser'
 
   spec.add_development_dependency 'bundler', '~> 1.3'
   spec.add_development_dependency 'rake'
