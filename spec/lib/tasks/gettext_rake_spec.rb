@@ -9,6 +9,7 @@ describe 'gettext.rake' do
   tmp_locales = File.expand_path('../../fixtures/tmp_locales', File.dirname(__FILE__))
   fixture_locales = File.expand_path('../../fixtures/fixture_locales', File.dirname(__FILE__))
   tmp_pot_path = File.expand_path('sinatra-i18n.pot', tmp_locales)
+  merge_locales = File.expand_path('../../fixtures/merge_locales', File.dirname(__FILE__))
 
   before :each do
     FileUtils.rm_r(tmp_locales, force: true)
@@ -104,6 +105,22 @@ describe 'gettext.rake' do
       allow(GettextSetup::Pot).to receive(:update_pot).and_return(false)
       expect do
         GettextSetup.initialize(tmp_locales)
+        subject.invoke
+      end.to raise_error(SystemExit)
+    end
+  end
+
+  context Rake::Task['gettext:merge'] do
+    it 'outputs correctly' do
+      expect do
+        GettextSetup.initialize(merge_locales)
+        subject.invoke
+      end.to output(/PO files have been successfully merged/).to_stdout
+    end
+    it 'exits 1 on error' do
+      allow(GettextSetup::Pot).to receive(:merge).and_return(false)
+      expect do
+        GettextSetup.initialize(merge_locales)
         subject.invoke
       end.to raise_error(SystemExit)
     end
