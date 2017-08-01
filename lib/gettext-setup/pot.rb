@@ -137,5 +137,31 @@ module GettextSetup
         end
       end
     end
+
+    def self.merge(locales_path: GettextSetup.locales_path)
+      GettextSetup.initialize(locales_path)
+      target_filename = GettextSetup.config['project_name'] + '.pot'
+      target_path = File.expand_path(target_filename, locales_path)
+      oldpot_dir = File.expand_path('oldpot', locales_path)
+      oldpot_path = File.expand_path("oldpot/old_#{target_filename}", locales_path)
+
+      if File.exist? target_path
+        FileUtils.mkdir_p(oldpot_dir)
+        begin
+          FileUtils.mv(target_path, oldpot_path)
+        rescue
+          raise "There was a problem creating .pot backup #{oldpot_path}, merge failed."
+        end
+        puts "Warning - #{target_filename} already exists and will be relocated to oldpot/old_#{target_filename}."
+      end
+
+      locales_glob = Dir.glob("#{locales_path}/*.pot")
+      cmd = "msgcat #{locales_glob.join(' ')} -o #{target_path}"
+      _, _, _, wait = Open3.popen3(cmd)
+      exitstatus = wait.value
+      raise 'PO files failed to merge' unless exitstatus.success?
+      puts "PO files have been successfully merged, #{target_filename} has been created."
+      exitstatus
+    end
   end
 end

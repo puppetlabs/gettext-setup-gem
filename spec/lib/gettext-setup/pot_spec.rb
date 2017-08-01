@@ -18,6 +18,10 @@ describe GettextSetup::Pot do
     File.join(File.dirname(__FILE__), '../../fixtures/locales')
   end
 
+  def merge_locales_path
+    File.join(File.dirname(__FILE__), '../../fixtures/merge_locales')
+  end
+
   describe 'string_changes?', if: msgcmp_present? do
     old_pot = File.absolute_path('../../fixtures/string_changes/old.pot', File.dirname(__FILE__))
 
@@ -142,6 +146,61 @@ describe GettextSetup::Pot do
       end.to output("No string changes detected, keeping old POT file\n").to_stdout
       new_contents = File.read(path)
       expect(new_contents).to eq(contents)
+    end
+  end
+  context 'Merge pot files' do
+    # setup
+    before :all do
+      { 'ruby' => 'ruby.pot', 'puppet' => 'puppet.pot', 'metadata' => 'metadata.pot' }.each do |pot_type, pot_name|
+        File.open(File.join(merge_locales_path, pot_name), 'w') do |file|
+          file.write <<-EOF
+  # Copyright (C) 2017 Puppet, Inc.
+  # This file is distributed under the same license as the puppetlabs-mysql package.
+  # FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+  #
+  #, fuzzy
+  msgid ""
+  msgstr ""
+  "Project-Id-Version: puppetlabs-mysql 3.11.0-30-g4cc0bbf\\n"
+  "Report-Msgid-Bugs-To: docs@puppet.com\\n"
+  "POT-Creation-Date: 2017-08-26 21:30+0100\\n"
+  "PO-Revision-Date: 2017-08-26 21:30+0100\\n"
+  "Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n"
+  "Language-Team: LANGUAGE <LL@li.org>\\n"
+  "MIME-Version: 1.0\\n"
+  "Content-Type: text/plain; charset=UTF-8\\n"
+  "Content-Transfer-Encoding: 8bit\\n"
+  "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\\n"
+
+  #: ../lib/puppet/parser/functions/mysql_strip_hash.rb:11
+  msgid "this is a #{pot_type} string"
+  msgstr ""
+        EOF
+        end
+      end
+    end
+    it 'merges pot files' do
+      expect do
+        GettextSetup::Pot.merge(locales_path: merge_locales_path)
+      end.to output(%r{PO files have been successfully merged}).to_stdout
+      contents = File.read(File.join(merge_locales_path, GettextSetup.config['project_name'] + '.pot'))
+      expect(contents).to match(%r{.*\"this is a metadata string\".*})
+      expect(contents).to match(%r{.*\"this is a puppet string\".*})
+      expect(contents).to match(%r{.*\"this is a ruby string\".*})
+    end
+
+    it 'creates an oldpot file if one already exists' do
+      expect do
+        GettextSetup::Pot.merge(locales_path: merge_locales_path)
+      end.to output("Warning - merge_locales.pot already exists and will be relocated to oldpot/old_merge_locales.pot.\nPO files have been successfully merged, merge_locales.pot has been created.\n").to_stdout
+      file = File.expand_path('oldpot/old_merge_locales.pot', merge_locales_path)
+      expect(File.exist?(file)).to be true
+    end
+
+    # cleanup
+    after :all do
+      FileUtils.rm(Dir.glob("#{merge_locales_path}/*.pot"))
+      FileUtils.rm_rf("#{merge_locales_path}/oldpot")
     end
   end
 end

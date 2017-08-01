@@ -99,3 +99,14 @@ E.g. `#. The placeholder in this string represents the name of a parameter.`
 4. When a PO file reaches 100% translated and reviewed, a webhook pushes it back to the source repo ready to be consumed by your app. 
 
 5. Your app checks the user's locale settings (the browser settings for web apps, or the system settings for the CLI). If we support the user's preferred locale, the app will display strings in the user's language. Otherwise, it defaults to English.
+
+## Merge Pot files rake task
+
+The rake task that merges .pot files is present for the internationalisation of a module. This task uses 'msgcat', which is only natively present on OSes that are GNU based. For running this task locally on another OS you will need to download the gettext pkg and install it locally:
+https://pkgs.org/download/gettext
+
+This task will run within the gettext setup locales_path provided by GettextSetup. The result will be a merged pot file created from all pot files kept in this location.
+
+By default the merged pot file is locales_path/project_name.pot. This can be overridden when calling the method by providing a chosen path.
+
+Please note: Since the default merged file name is project_name.pot, it will override anything of that name within the locales directory.

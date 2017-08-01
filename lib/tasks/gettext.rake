@@ -55,4 +55,14 @@ namespace :gettext do
       puts e.message
     end
   end
+
+  desc 'Merge all Pot files within locales folder'
+  task :merge do
+    begin
+      result = GettextSetup::Pot.merge
+      exit 1 unless result
+    rescue GettextSetup::NoConfigFoundError => e
+      puts e.message
+    end
+  end
 end
