@@ -6,7 +6,7 @@ gettext:
   # called <project_name>.pot?
   project_name: 'sinatra-i18n'
   # This is used in comments in the .pot and .po files to indicate what
-  # project the files belong to and should bea little more desctiptive than
+  # project the files belong to and should bea little more descriptive than
   # <project_name>
   package_name: Sinatra i18n demo
   # The locale that the default messages in the .pot file are in
