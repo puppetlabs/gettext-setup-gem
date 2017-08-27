@@ -40,6 +40,14 @@ describe 'gettext.rake' do
       end.to raise_error(SystemExit)
     end
   end
+  context Rake::Task['gettext:pot'] do
+    it 'outputs correctly, when passing a filename' do
+      expect do
+        GettextSetup.initialize(tmp_locales)
+        subject.invoke(File.expand_path('bill.pot', tmp_locales))
+      end.to output(/POT file .+\/spec\/fixtures\/tmp_locales\/bill.pot has been generated/).to_stdout
+    end
+  end
   context Rake::Task['gettext:metadata_pot'] do
     it 'outputs correctly' do
       expect do

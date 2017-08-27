@@ -18,11 +18,12 @@ namespace :gettext do
   end
 
   desc 'Generate POT file'
-  task :pot do
+  task :pot, [:target_path] do |_, args|
     begin
-      result = GettextSetup::Pot.generate_new_pot
-      if result
-        puts "POT file #{GettextSetup::Pot.pot_file_path} has been generated"
+      target_path = args.target_path
+      if GettextSetup::Pot.generate_new_pot(target_path: target_path)
+        target_path = GettextSetup::Pot.pot_file_path if target_path.nil?
+        puts "POT file #{target_path} has been generated"
       else
         exit 1
       end
