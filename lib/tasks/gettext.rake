@@ -20,9 +20,11 @@ namespace :gettext do
   desc 'Generate POT file'
   task :pot do
     begin
-      result = GettextSetup::Pot.generate_new_pot
+      filename = ENV['filename']
+      result = GettextSetup::Pot.generate_new_pot filename
       if result
-        puts "POT file #{GettextSetup::Pot.pot_file_path} has been generated"
+        filename = GettextSetup::Pot.pot_file_path if filename.nil?
+        puts "POT file #{filename} has been generated"
       else
         exit 1
       end
