@@ -50,7 +50,7 @@ module GettextSetup
       return true
     end
 
-    def self.generate_new_pot(path = nil, locales_path = GettextSetup.locales_path)
+    def self.generate_new_pot(locales_path = GettextSetup.locales_path, path = nil)
       GettextSetup.initialize(locales_path)
       path ||= pot_file_path
       config = GettextSetup.config
@@ -116,13 +116,13 @@ module GettextSetup
 
       if !File.exist? path
         puts 'No existing POT file, generating new'
-        result = GettextSetup::Pot.generate_new_pot(path, locales_path)
+        result = GettextSetup::Pot.generate_new_pot(locales_path, path)
         puts "POT file #{path} has been generated" if result
         result
       else
         old_pot = path + '.old'
         File.rename(path, old_pot)
-        result = GettextSetup::Pot.generate_new_pot(path, locales_path)
+        result = GettextSetup::Pot.generate_new_pot(locales_path, path)
         if !result
           puts 'POT creation failed'
           result

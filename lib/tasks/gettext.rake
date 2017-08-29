@@ -18,9 +18,9 @@ namespace :gettext do
   end
 
   desc 'Generate POT file'
-  task :pot do
+  task :pot, [:filename] do |_, args|
     begin
-      filename = ENV['filename']
+      filename = args.filename || ENV['filename']
       result = GettextSetup::Pot.generate_new_pot filename
       if result
         filename = GettextSetup::Pot.pot_file_path if filename.nil?

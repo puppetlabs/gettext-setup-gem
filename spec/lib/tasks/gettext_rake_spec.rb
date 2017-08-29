@@ -40,7 +40,7 @@ describe 'gettext.rake' do
       end.to raise_error(SystemExit)
     end
   end
-  context Rake::Task['gettext:pot filename'] do
+  context Rake::Task['gettext:pot'] do
     it 'outputs correctly, when passing a filename' do
       expect do
         GettextSetup.initialize(tmp_locales)
