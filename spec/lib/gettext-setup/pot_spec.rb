@@ -45,12 +45,12 @@ describe GettextSetup::Pot do
   context 'generate_new_pot' do
     it "fails when GettextSetup can't find a config.yaml" do
       path = File.join(Dir.mktmpdir, 'empty.pot')
-      expect { GettextSetup::Pot.generate_new_pot(Dir.mktmpdir, path) }.to raise_error(NoConfigFoundError)
+      expect { GettextSetup::Pot.generate_new_pot(locales_path: Dir.mktmpdir, target_path: path) }.to raise_error(NoConfigFoundError)
     end
     it 'builds a POT file' do
       path = File.join(Dir.mktmpdir, 'new.pot')
       expect do
-        GettextSetup::Pot.generate_new_pot(fixture_locales_path, path)
+        GettextSetup::Pot.generate_new_pot(locales_path: fixture_locales_path, target_path: path)
       end.to output('').to_stdout # STDOUT is determined in `update_pot`.
       contents = File.read(path)
       expect(contents).to match(/Fixture locales/)

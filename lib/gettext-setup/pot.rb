@@ -50,9 +50,9 @@ module GettextSetup
       return true
     end
 
-    def self.generate_new_pot(locales_path = GettextSetup.locales_path, path = nil)
+    def self.generate_new_pot(locales_path: GettextSetup.locales_path, target_path: nil)
       GettextSetup.initialize(locales_path)
-      path ||= pot_file_path
+      target_path ||= pot_file_path
       config = GettextSetup.config
       package_name = config['package_name']
       bugs_address = config['bugs_address']
@@ -60,7 +60,7 @@ module GettextSetup
       # Done this way to allow the user to enter an empty string in the config.
       comments_tag = config.key?('comments_tag') ? config['comments_tag'] : 'TRANSLATORS'
       version = `git describe`
-      system("rxgettext -o #{path} --no-wrap --sort-by-file " \
+      system("rxgettext -o #{target_path} --no-wrap --sort-by-file " \
              "--add-comments#{comments_tag.to_s == '' ? '' : '=' + comments_tag} --msgid-bugs-address '#{bugs_address}' " \
              "--package-name '#{package_name}' " \
              "--package-version '#{version}' " \
@@ -116,13 +116,13 @@ module GettextSetup
 
       if !File.exist? path
         puts 'No existing POT file, generating new'
-        result = GettextSetup::Pot.generate_new_pot(locales_path, path)
+        result = GettextSetup::Pot.generate_new_pot(locales_path: locales_path, target_path: path)
         puts "POT file #{path} has been generated" if result
         result
       else
         old_pot = path + '.old'
         File.rename(path, old_pot)
-        result = GettextSetup::Pot.generate_new_pot(locales_path, path)
+        result = GettextSetup::Pot.generate_new_pot(locales_path: locales_path, target_path: path)
         if !result
           puts 'POT creation failed'
           result
