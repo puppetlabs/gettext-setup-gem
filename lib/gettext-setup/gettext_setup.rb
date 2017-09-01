@@ -98,7 +98,7 @@ module GettextSetup
     explicit = Dir.glob(File.absolute_path('*/*.po', locales_path)).map do |x|
       File.basename(File.dirname(x))
     end
-    (explicit + [default_locale]).uniq
+    ([default_locale] + explicit).uniq
   end
 
   # Given an HTTP Accept-Language header return the locale with the highest
