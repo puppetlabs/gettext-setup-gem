@@ -70,11 +70,11 @@ describe GettextSetup do
       expect(GettextSetup.candidate_locales).to include('en')
       GettextSetup.clear
       begin
-        old_locale = ENV['LANG']
-        ENV['LANG'] = 'de_DE'
+        old_locale = Locale.current
+        Locale.current = 'de_DE'
         expect(GettextSetup.candidate_locales).to eq('de_DE,de,en')
       ensure
-        ENV['LANG'] = old_locale
+        Locale.current = old_locale
       end
     end
   end
