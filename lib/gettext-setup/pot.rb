@@ -50,9 +50,14 @@ module GettextSetup
       return true
     end
 
-    def self.generate_new_pot(locales_path: GettextSetup.locales_path, target_path: nil)
+    # @param [:locales_path] opts
+    #   The directory for the locales.
+    # @param [:target_path] opts
+    #   The output path for the new POT file.
+    def self.generate_new_pot(opts = {})
+      locales_path = opts[:locales_path] || GettextSetup.locales_path
       GettextSetup.initialize(locales_path)
-      target_path ||= pot_file_path
+      target_path = opts[:target_path] || pot_file_path
       config = GettextSetup.config
       package_name = config['package_name']
       bugs_address = config['bugs_address']
@@ -138,7 +143,10 @@ module GettextSetup
       end
     end
 
-    def self.merge(locales_path: GettextSetup.locales_path)
+    # @param [:locales_path] opts
+    #   The directory for the locales.
+    def self.merge(opts = {})
+      locales_path = opts[:locales_path] || GettextSetup.locales_path
       GettextSetup.initialize(locales_path)
       target_filename = GettextSetup.config['project_name'] + '.pot'
       target_path = File.expand_path(target_filename, locales_path)
