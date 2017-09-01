@@ -9,3 +9,7 @@ coverage/
 
 # these will change each spec test run
 spec/fixtures/tmp_locales
+
+# these will be created and deleted each spec run
+spec/fixtures/merge_locales/*.pot
+spec/fixtures/merge_locales/oldpot
