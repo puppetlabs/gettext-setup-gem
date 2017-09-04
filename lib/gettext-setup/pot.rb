@@ -156,7 +156,7 @@ module GettextSetup
       if File.exist? target_path
         FileUtils.mkdir_p(oldpot_dir)
         begin
-          FileUtils.mv(target_path, oldpot_path)
+          FileUtils.cp(target_path, oldpot_path)
         rescue
           raise "There was a problem creating .pot backup #{oldpot_path}, merge failed."
         end
