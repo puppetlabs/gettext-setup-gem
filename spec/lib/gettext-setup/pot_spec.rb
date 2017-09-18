@@ -62,6 +62,18 @@ describe GettextSetup::Pot do
       expect(contents).to match(/Puppet, LLC/)
       expect(contents).to match(/test_strings.rb:1/)
     end
+    it 'builds a POT file with :header_only' do
+      path = File.join(Dir.mktmpdir, 'new.pot')
+      expect do
+        GettextSetup::Pot.generate_new_pot(locales_path: fixture_locales_path, target_path: path, header_only: true)
+      end.to output('').to_stdout # STDOUT is determined in `update_pot`
+      contents = File.read(path)
+      puts contents
+      expect(contents).to_not match(/Hello, world/)
+      expect(contents).to match(/Fixture locales/)
+      expect(contents).to match(/docs@puppetlabs.com/)
+      expect(contents).to match(/Puppet, LLC/)
+    end
   end
 
   context 'generate_new_po' do
