@@ -68,7 +68,6 @@ describe GettextSetup::Pot do
         GettextSetup::Pot.generate_new_pot(locales_path: fixture_locales_path, target_path: path, header_only: true)
       end.to output('').to_stdout # STDOUT is determined in `update_pot`
       contents = File.read(path)
-      puts contents
       expect(contents).to_not match(/Hello, world/)
       expect(contents).to match(/Fixture locales/)
       expect(contents).to match(/docs@puppetlabs.com/)
@@ -165,7 +164,7 @@ describe GettextSetup::Pot do
     before :all do
       { 'ruby' => 'ruby.pot', 'puppet' => 'puppet.pot', 'metadata' => 'metadata.pot' }.each do |pot_type, pot_name|
         File.open(File.join(merge_locales_path, pot_name), 'w') do |file|
-          file.write <<-EOF
+          file.write <<-POT
   # Copyright (C) 2017 Puppet, Inc.
   # This file is distributed under the same license as the puppetlabs-mysql package.
   # FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
@@ -187,7 +186,7 @@ describe GettextSetup::Pot do
   #: ../lib/puppet/parser/functions/mysql_strip_hash.rb:11
   msgid "this is a #{pot_type} string"
   msgstr ""
-        EOF
+        POT
         end
       end
     end

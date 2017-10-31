@@ -1,5 +1,3 @@
-# coding: utf-8
-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
@@ -29,6 +27,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec-core', '~> 3.1'
   spec.add_development_dependency 'rspec-expectations', '~> 3.1'
   spec.add_development_dependency 'rspec-mocks', '~> 3.1'
-  spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'simplecov'
 end

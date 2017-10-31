@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-
 require_relative '../gettext-setup/gettext_setup'
 require_relative '../gettext-setup/pot'
 require_relative '../gettext-setup/metadata_pot'

@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-
 require 'fast_gettext'
 require 'yaml'
 require 'locale'

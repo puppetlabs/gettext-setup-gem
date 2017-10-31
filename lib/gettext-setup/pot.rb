@@ -1,7 +1,6 @@
-# -*- encoding: utf-8 -*-
-
 require 'open3'
 require 'English'
+require 'tempfile'
 
 module GettextSetup
   module Pot
@@ -166,8 +165,8 @@ module GettextSetup
         FileUtils.mkdir_p(oldpot_dir)
         begin
           FileUtils.cp(target_path, oldpot_path)
-        rescue
-          raise "There was a problem creating .pot backup #{oldpot_path}, merge failed."
+        rescue Errno::ENOENT => e
+          raise "There was a problem creating .pot backup #{oldpot_path}, merge failed: #{e.message}"
         end
         puts "Warning - #{target_filename} already exists and will be relocated to oldpot/old_#{target_filename}."
       end
