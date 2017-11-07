@@ -1,7 +1,6 @@
-# -*- encoding: utf-8 -*-
-
 require 'open3'
 require 'English'
+require 'tempfile'
 
 module GettextSetup
   module Pot
@@ -54,10 +53,18 @@ module GettextSetup
     #   The directory for the locales.
     # @param [:target_path] opts
     #   The output path for the new POT file.
+    # @param [:header_only] opts
+    #   Set to true to create a .pot file with only a header
     def self.generate_new_pot(opts = {})
       locales_path = opts[:locales_path] || GettextSetup.locales_path
       GettextSetup.initialize(locales_path)
       target_path = opts[:target_path] || pot_file_path
+      input_files = if opts[:header_only]
+                      tmpfile = Tempfile.new('gettext-setup.tmp')
+                      tmpfile.path
+                    else
+                      files_to_translate.join(' ')
+                    end
       config = GettextSetup.config
       package_name = config['package_name']
       bugs_address = config['bugs_address']
@@ -69,8 +76,9 @@ module GettextSetup
              "--add-comments#{comments_tag.to_s == '' ? '' : '=' + comments_tag} --msgid-bugs-address '#{bugs_address}' " \
              "--package-name '#{package_name}' " \
              "--package-version '#{version}' " \
-             "--copyright-holder='#{copyright_holder}' --copyright-year=#{Time.now.year} " +
-             files_to_translate.join(' '))
+             "--copyright-holder='#{copyright_holder}' --copyright-year=#{Time.now.year} " \
+             "#{input_files}")
+      tmpfile.unlink if tmpfile
       $CHILD_STATUS.success?
     end
 
@@ -157,8 +165,8 @@ module GettextSetup
         FileUtils.mkdir_p(oldpot_dir)
         begin
           FileUtils.cp(target_path, oldpot_path)
-        rescue
-          raise "There was a problem creating .pot backup #{oldpot_path}, merge failed."
+        rescue Errno::ENOENT => e
+          raise "There was a problem creating .pot backup #{oldpot_path}, merge failed: #{e.message}"
         end
         puts "Warning - #{target_filename} already exists and will be relocated to oldpot/old_#{target_filename}."
       end
