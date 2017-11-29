@@ -57,7 +57,7 @@ module GettextSetup
     #   Set to true to create a .pot file with only a header
     def self.generate_new_pot(opts = {})
       locales_path = opts[:locales_path] || GettextSetup.locales_path
-      GettextSetup.initialize(locales_path)
+      GettextSetup.initialize_config(locales_path)
       target_path = opts[:target_path] || pot_file_path
       input_files = if opts[:header_only]
                       tmpfile = Tempfile.new('gettext-setup.tmp')
@@ -84,7 +84,7 @@ module GettextSetup
 
     def self.generate_new_po(language, locales_path = GettextSetup.locales_path,
                              pot_file = nil, po_file = nil)
-      GettextSetup.initialize(locales_path)
+      GettextSetup.initialize_config(locales_path)
       language ||= ENV['LANGUAGE']
       pot_file ||= GettextSetup::Pot.pot_file_path
       po_file ||= GettextSetup::Pot.po_file_path(language)
@@ -124,7 +124,7 @@ module GettextSetup
     end
 
     def self.update_pot(locales_path = GettextSetup.locales_path, path = nil)
-      GettextSetup.initialize(locales_path)
+      GettextSetup.initialize_config(locales_path)
       path ||= pot_file_path
 
       if !File.exist? path
@@ -155,7 +155,7 @@ module GettextSetup
     #   The directory for the locales.
     def self.merge(opts = {})
       locales_path = opts[:locales_path] || GettextSetup.locales_path
-      GettextSetup.initialize(locales_path)
+      GettextSetup.initialize_config(locales_path)
       target_filename = GettextSetup.config['project_name'] + '.pot'
       target_path = File.expand_path(target_filename, locales_path)
       oldpot_dir = File.expand_path('oldpot', locales_path)

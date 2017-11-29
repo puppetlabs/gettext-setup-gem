@@ -21,11 +21,7 @@ module GettextSetup
   # valid `options` fields:
   # :file_format - one of the supported backends for fast_gettext (e.g. :po, :mo, :yaml, etc.)
   def self.initialize(locales_path = 'locales', options = {})
-    config_path = File.absolute_path('config.yaml', locales_path)
-    File.exist?(config_path) || raise(NoConfigFoundError, config_path)
-
-    @config = YAML.load_file(config_path)['gettext']
-    @locales_path = locales_path
+    GettextSetup.initialize_config(locales_path)
 
     # Make the translation methods available everywhere
     Object.send(:include, FastGettext::Translation)
@@ -45,6 +41,18 @@ module GettextSetup
     FastGettext.default_available_locales = FastGettext.default_available_locales | locales
 
     Locale.set_default(default_locale)
+  end
+
+  # Sets up the config class variables.
+  #
+  # Call this without calling initialize when you only need to deal with the
+  # translation files and you don't need runtime translation.
+  def self.initialize_config(locales_path = 'locales')
+    config_path = File.absolute_path('config.yaml', locales_path)
+    File.exist?(config_path) || raise(NoConfigFoundError, config_path)
+
+    @config = YAML.load_file(config_path)['gettext']
+    @locales_path = locales_path
   end
 
   def self.config?
