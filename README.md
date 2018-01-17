@@ -19,26 +19,26 @@ This project sets the default locale to English. If the user has set a different
 These are the poignant bits of this example that you need to replicate in your project:
 
 1. Add `gem 'gettext-setup'` to your `Gemfile`.
-1. Copy `locales/config-sample.yaml` to your project and put it into a
+2. Copy `locales/config-sample.yaml` to your project and put it into a
 `locales` directory as `config.yaml`.
-1. Edit `locales/config.yaml` and make the necessary changes for your project
-1. Add these three lines to your `Rakefile`, ensuring the `locales` directory is found by the last line:
+3. Edit `locales/config.yaml` and make the necessary changes for your project
+4. Add these three lines to your `Rakefile`, ensuring the `locales` directory is found by the last line:
    ```ruby
    spec = Gem::Specification.find_by_name 'gettext-setup'
    load "#{spec.gem_dir}/lib/tasks/gettext.rake"
    GettextSetup.initialize(File.absolute_path('locales', File.dirname(__FILE__)))
    ```
-1. Add these lines at the start of your app (`app.rb` for server-side, the executable binary for CLI applications):
+5. Add these lines at the start of your app (`app.rb` for server-side, the executable binary for CLI applications):
    ```ruby
    require 'gettext-setup'
    GettextSetup.initialize(File.absolute_path('locales', File.dirname(__FILE__)))
    ```
    Note that the second line may require modification to find the `locales` directory.
-1. For client-side applications, add this line:
+6. For client-side applications, add this line:
    ```ruby
    GettextSetup.negotiate_locale!(GettextSetup.candidate_locales)
    ```
-1. For server-side applications, add these lines:
+7. For server-side applications, add these lines:
    ```ruby
    before do
        GettextSetup.negotiate_locale!(env["HTTP_ACCEPT_LANGUAGE"])
@@ -67,12 +67,16 @@ E.g. `n_("There is %{count} bicycle in %{city}", "There are %{count} bicycles in
 
 Pluralization rules vary across languages. The pluralization rules are specified in the PO file and look something like this `Plural-Forms: nplurals=2; plural=(n > 1);`. This is the pluralization rule for German. It means that German has two pluralization rules. The first rule is `plural=n > 1)` and the second rule is all other counts.
 
-Plurals are selected from the PO file by index. Here's an example of how a pluralized string is handled in a PO file:
+Plurals are selected from the PO file by index. 
 
-`msgid "%{count} file"
-`msgid_plural "%{count} files"
-`msgstr[0] "%{count} Dateien"
-`msgstr[1] "%{count} Datei"
+Here's an example of how a pluralized string is handled in a PO file:
+
+```
+msgid "%{count} file"
+msgid_plural "%{count} files"
+msgstr[0] "%{count} Dateien"
+msgstr[1] "%{count} Datei"
+```
 
 The `msgid` is the singular version of the English source string that's pulled in to the POT file and PO from the code file.
 
