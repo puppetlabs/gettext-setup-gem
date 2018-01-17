@@ -1,6 +1,6 @@
 # gettext-setup gem
 
-This is a simple gem to set up i18n for Ruby projects (including [Sinatra](www.sinatrarb.com/) web apps) using gettext and fast gettext.
+This is a simple gem to set up i18n for Ruby projects (including [Sinatra](http://www.sinatrarb.com/) web apps) using gettext and fast gettext.
 
 This project sets the default locale to English. If the user has set a different locale in their browser preferences, and we support the user's preferred locale, strings and data formatting will be customized for that locale.
 
@@ -107,6 +107,6 @@ https://pkgs.org/download/gettext
 
 This task will run within the gettext setup locales_path provided by GettextSetup. The result will be a merged pot file created from all pot files kept in this location.
 
-By default the merged pot file is locales_path/project_name.pot. This can be overridden when calling the method by providing a chosen path.
+By default, the merged pot file is locales_path/project_name.pot. This can be overridden when calling the method by providing a chosen path.
 
 Please note: Since the default merged file name is project_name.pot, it will override anything of that name within the locales directory.
