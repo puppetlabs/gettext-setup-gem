@@ -23,21 +23,23 @@ These are the poignant bits of this example that you need to replicate in your p
 `locales` directory as `config.yaml`.
 1. Edit `locales/config.yaml` and make the necessary changes for your project
 1. Add these three lines to your `Rakefile`, ensuring the `locales` directory is found by the last line:
-   ```
+   ```ruby
    spec = Gem::Specification.find_by_name 'gettext-setup'
    load "#{spec.gem_dir}/lib/tasks/gettext.rake"
    GettextSetup.initialize(File.absolute_path('locales', File.dirname(__FILE__)))
    ```
 1. Add these lines at the start of your app (`app.rb` for server-side, the executable binary for CLI applications):
-   ```
+   ```ruby
    require 'gettext-setup'
    GettextSetup.initialize(File.absolute_path('locales', File.dirname(__FILE__)))
    ```
    Note that the second line may require modification to find the `locales` directory.
 1. For client-side applications, add this line:
-    `GettextSetup.negotiate_locale!(GettextSetup.candidate_locales)`
-1. For server-side applications, add these lines:
+   ```ruby
+   GettextSetup.negotiate_locale!(GettextSetup.candidate_locales)
    ```
+1. For server-side applications, add these lines:
+   ```ruby
    before do
        GettextSetup.negotiate_locale!(env["HTTP_ACCEPT_LANGUAGE"])
    end
