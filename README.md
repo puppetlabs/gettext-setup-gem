@@ -1,6 +1,6 @@
 # gettext-setup gem
 
-This is a simple gem to set up i18n for Ruby projects (including [Sinatra](www.sinatrarb.com/) web apps) using gettext and fast gettext.
+This is a simple gem to set up i18n for Ruby projects (including [Sinatra](http://www.sinatrarb.com/) web apps) using gettext and fast gettext.
 
 This project sets the default locale to English. If the user has set a different locale in their browser preferences, and we support the user's preferred locale, strings and data formatting will be customized for that locale.
 
@@ -16,34 +16,34 @@ This project sets the default locale to English. If the user has set a different
 
 ## Setup for your project
 
-These are the poignant bits of this example that you need to replicate in
-your project:
+These are the poignant bits of this example that you need to replicate in your project:
 
 1. Add `gem 'gettext-setup'` to your `Gemfile`.
-1. Copy `locales/config-sample.yaml` to your project and put it into a
+2. Copy `locales/config-sample.yaml` to your project and put it into a
 `locales` directory as `config.yaml`.
-1. Edit `locales/config.yaml` and make the necessary changes for your
-   project
-1. Add these three lines to your `Rakefile`, ensuring the `locales`
-   directory is found by the last line:
-```
-    spec = Gem::Specification.find_by_name 'gettext-setup'
-    load "#{spec.gem_dir}/lib/tasks/gettext.rake"
-    GettextSetup.initialize(File.absolute_path('locales', File.dirname(__FILE__)))
-```
-1. Add these lines at the start of your app (`app.rb` for server-side, the executable binary for CLI applications):
-    `require 'gettext-setup'`
-    `GettextSetup.initialize(File.absolute_path('locales', File.dirname(__FILE__)))`
-    (Note that the second line may require modification to find the `locales` directory.
-1. For client-side applications, add this line:
-    `GettextSetup.negotiate_locale!(GettextSetup.candidate_locales)`
-1. For server-side applications, add these lines:
-```
-    before do
-      GettextSetup.negotiate_locale!(env["HTTP_ACCEPT_LANGUAGE"])
-    end
-```
-
+3. Edit `locales/config.yaml` and make the necessary changes for your project
+4. Add these three lines to your `Rakefile`, ensuring the `locales` directory is found by the last line:
+   ```ruby
+   spec = Gem::Specification.find_by_name 'gettext-setup'
+   load "#{spec.gem_dir}/lib/tasks/gettext.rake"
+   GettextSetup.initialize(File.absolute_path('locales', File.dirname(__FILE__)))
+   ```
+5. Add these lines at the start of your app (`app.rb` for server-side, the executable binary for CLI applications):
+   ```ruby
+   require 'gettext-setup'
+   GettextSetup.initialize(File.absolute_path('locales', File.dirname(__FILE__)))
+   ```
+   Note that the second line may require modification to find the `locales` directory.
+6. For client-side applications, add this line:
+   ```ruby
+   GettextSetup.negotiate_locale!(GettextSetup.candidate_locales)
+   ```
+7. For server-side applications, add these lines:
+   ```ruby
+   before do
+       GettextSetup.negotiate_locale!(env["HTTP_ACCEPT_LANGUAGE"])
+   end
+    ```
 ## Writing translatable code
 
 ### Use full sentences
@@ -67,13 +67,16 @@ E.g. `n_("There is %{count} bicycle in %{city}", "There are %{count} bicycles in
 
 Pluralization rules vary across languages. The pluralization rules are specified in the PO file and look something like this `Plural-Forms: nplurals=2; plural=(n > 1);`. This is the pluralization rule for German. It means that German has two pluralization rules. The first rule is `plural=n > 1)` and the second rule is all other counts.
 
-Plurals are selected from the PO file by index. Here's an example of how a
-pluralized string is handled in a PO file:
+Plurals are selected from the PO file by index. 
 
-`msgid "%{count} file"
-`msgid_plural "%{count} files"
-`msgstr[0] "%{count} Dateien"
-`msgstr[1] "%{count} Datei"
+Here's an example of how a pluralized string is handled in a PO file:
+
+```
+msgid "%{count} file"
+msgid_plural "%{count} files"
+msgstr[0] "%{count} Dateien"
+msgstr[1] "%{count} Datei"
+```
 
 The `msgid` is the singular version of the English source string that's pulled in to the POT file and PO from the code file.
 
@@ -102,11 +105,11 @@ E.g. `#. The placeholder in this string represents the name of a parameter.`
 
 ## Merge Pot files rake task
 
-The rake task that merges .pot files is present for the internationalisation of a module. This task uses 'msgcat', which is only natively present on OSes that are GNU based. For running this task locally on another OS you will need to download the gettext pkg and install it locally:
+The rake task that merges .pot files is present for the internationalisation of a module. This task uses 'msgcat', which is only natively present on OSes that are GNU based. For running this task locally on another OS, you will need to download the gettext pkg and install it locally:
 https://pkgs.org/download/gettext
 
 This task will run within the gettext setup locales_path provided by GettextSetup. The result will be a merged pot file created from all pot files kept in this location.
 
-By default the merged pot file is locales_path/project_name.pot. This can be overridden when calling the method by providing a chosen path.
+By default, the merged pot file is locales_path/project_name.pot. This can be overridden when calling the method by providing a chosen path.
 
 Please note: Since the default merged file name is project_name.pot, it will override anything of that name within the locales directory.
