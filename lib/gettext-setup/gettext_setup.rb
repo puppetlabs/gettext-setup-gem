@@ -11,7 +11,6 @@ module GettextSetup
 
   @config = nil
   @translation_repositories = {}
-  FastGettext.default_available_locales = []
 
   # `locales_path` should include:
   # - config.yaml
@@ -37,6 +36,7 @@ module GettextSetup
     FastGettext.default_text_domain = 'master_domain'
 
     # Likewise, be explicit in our default language choice.
+    FastGettext.default_available_locales = [] if FastGettext.default_available_locales == true
     FastGettext.default_locale = default_locale
     FastGettext.default_available_locales = FastGettext.default_available_locales | locales
 
