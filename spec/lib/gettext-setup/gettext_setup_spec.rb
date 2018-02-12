@@ -10,6 +10,15 @@ describe GettextSetup do
   before(:each) do
     GettextSetup.initialize(locales_path)
   end
+  after(:each) do
+    FastGettext.default_text_domain = nil
+    FastGettext.default_available_locales = nil
+    FastGettext.default_locale = nil
+
+    FastGettext.text_domain = nil
+    FastGettext.available_locales = nil
+    FastGettext.locale = nil
+  end
   let(:config) do
     GettextSetup.config
   end
@@ -79,7 +88,7 @@ describe GettextSetup do
   end
   context 'multiple locales' do
     # locales/ loads the de locale and fixture_locales/ loads the jp locale
-    before(:all) do
+    before(:each) do
       GettextSetup.initialize(fixture_locales_path)
     end
     it 'can aggregate locales across projects' do
@@ -95,7 +104,7 @@ describe GettextSetup do
     end
   end
   context 'translation repository chain' do
-    before(:all) do
+    before(:each) do
       GettextSetup.initialize(fixture_locales_path)
     end
     it 'chain is not nil' do
