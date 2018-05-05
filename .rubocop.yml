@@ -1,6 +1,10 @@
 Style/Documentation:
   Enabled: false
 
+# see https://github.com/puppetlabs/gettext-setup-gem/pull/65
+Style/Encoding:
+  Enabled: false
+
 # Line length is not useful
 Metrics/LineLength:
   Enabled: false

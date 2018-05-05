@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'rspec/expectations'
 require_relative '../../spec_helper'
 
