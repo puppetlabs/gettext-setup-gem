@@ -10,9 +10,9 @@ end
 def cmd_present?(cmd)
   # Try to call out to msgcmp, if it doesn't error, we have the tool
   `#{cmd} --version`
-  return true
+  true
 rescue IOError
-  return false
+  false
 end
 
 def msgcmp_present?

@@ -42,11 +42,11 @@ module GettextSetup
       if status.exitstatus == 1 || /this message is not used/.match(stderr) || /this message is used but not defined/.match(stderr)
         return true
       end
-      return false
+      false
     rescue IOError
       # probably means msgcmp is not present on the system
       # so return true to be on the safe side
-      return true
+      true
     end
 
     # @param [:locales_path] opts
