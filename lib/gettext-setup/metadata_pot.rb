@@ -13,7 +13,7 @@ module GettextSetup
 
     def self.metadata(metadata_file = 'metadata.json')
       if File.exist?(metadata_file)
-        file = open(metadata_file)
+        file = File.open(metadata_file)
         json = file.read
         JSON.parse(json)
       else
@@ -28,7 +28,7 @@ module GettextSetup
     end
 
     def self.generate_metadata_pot(pot_metadata = metadata, path = metadata_path)
-      open(path, 'w') do |f|
+      File.open(path, 'w') do |f|
         f << pot_string(pot_metadata)
       end
     end

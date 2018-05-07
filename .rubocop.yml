@@ -42,6 +42,8 @@ Style/PercentLiteralDelimiters:
 Style/FileName:
   Exclude:
     - 'lib/gettext-setup.rb'
+Style/ExpandPathArguments:
+  Enabled: false
 
 Gemspec/RequiredRubyVersion:
   Enabled: false
