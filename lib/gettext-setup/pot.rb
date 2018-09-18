@@ -42,6 +42,12 @@ module GettextSetup
       if status.exitstatus == 1 || /this message is not used/.match(stderr) || /this message is used but not defined/.match(stderr)
         return true
       end
+
+      if stderr =~ /msgcmp: command not found/
+        puts 'Warning - msgcmp is not present on the system'
+        return true
+      end
+
       false
     rescue IOError
       # probably means msgcmp is not present on the system
