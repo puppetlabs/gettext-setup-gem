@@ -186,7 +186,7 @@ describe GettextSetup::Pot do
   #: ../lib/puppet/parser/functions/mysql_strip_hash.rb:11
   msgid "this is a #{pot_type} string"
   msgstr ""
-        POT
+          POT
         end
       end
     end

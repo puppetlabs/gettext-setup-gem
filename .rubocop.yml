@@ -43,7 +43,7 @@ Style/MultilineBlockChain:
 Style/PercentLiteralDelimiters:
   Enabled: false
 
-Style/FileName:
+Naming/FileName:
   Exclude:
     - 'lib/gettext-setup.rb'
 Style/ExpandPathArguments:
