@@ -1,5 +1,6 @@
 require 'erb'
 require 'json'
+require 'date'
 
 module GettextSetup
   module MetadataPot
