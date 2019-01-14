@@ -58,6 +58,7 @@ module GettextSetup
 
   def self.config?
     raise NoConfigFoundError, File.join(locales_path, 'config.yaml') unless @config
+
     @config
   end
 
@@ -113,9 +114,11 @@ module GettextSetup
   # return the default locale
   def self.negotiate_locale(accept_header)
     unless @config
-      raise ArgumentError, 'No config.yaml found! Use `GettextSetup.initialize(locales_path)` to locate your config.yaml'
+      raise ArgumentError, 'No config.yaml found! Use ' \
+        '`GettextSetup.initialize(locales_path)` to locate your config.yaml'
     end
     return FastGettext.default_locale if accept_header.nil?
+
     available_locales = accept_header.split(',').map do |locale|
       pair = locale.strip.split(';q=')
       pair << '1.0' unless pair.size == 2
