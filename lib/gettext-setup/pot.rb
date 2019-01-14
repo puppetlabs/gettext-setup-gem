@@ -25,23 +25,28 @@ module GettextSetup
 
     def self.pot_file_path
       return if GettextSetup.locales_path.nil?
+
       return if GettextSetup.config['project_name'].nil?
+
       File.join(GettextSetup.locales_path, GettextSetup.config['project_name'] + '.pot')
     end
 
     def self.po_file_path(language)
       return if GettextSetup.locales_path.nil?
+
       return if GettextSetup.config['project_name'].nil?
+
       return if language.nil?
+
       File.join(GettextSetup.locales_path, language, GettextSetup.config['project_name'] + '.po')
     end
 
     def self.string_changes?(old_pot, new_pot)
       # Warnings will be in another language if locale is not set to en_US
       _, stderr, status = Open3.capture3("LANG=en_US msgcmp --use-untranslated '#{old_pot}' '#{new_pot}'")
-      if status.exitstatus == 1 || /this message is not used/.match(stderr) || /this message is used but not defined/.match(stderr)
-        return true
-      end
+      return true if status.exitstatus == 1 || \
+                     /this message is not used/.match(stderr) || \
+                     /this message is used but not defined/.match(stderr)
 
       if stderr =~ /msgcmp: command not found/
         puts 'Warning - msgcmp is not present on the system'
@@ -182,6 +187,7 @@ module GettextSetup
       _, _, _, wait = Open3.popen3(cmd)
       exitstatus = wait.value
       raise 'PO files failed to merge' unless exitstatus.success?
+
       puts "PO files have been successfully merged, #{target_filename} has been created."
       exitstatus
     end

@@ -164,7 +164,7 @@ describe GettextSetup::Pot do
     before :all do
       { 'ruby' => 'ruby.pot', 'puppet' => 'puppet.pot', 'metadata' => 'metadata.pot' }.each do |pot_type, pot_name|
         File.open(File.join(merge_locales_path, pot_name), 'w') do |file|
-          file.write <<-POT
+          file.write <<POT
   # Copyright (C) 2017 Puppet, Inc.
   # This file is distributed under the same license as the puppetlabs-mysql package.
   # FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
@@ -186,7 +186,7 @@ describe GettextSetup::Pot do
   #: ../lib/puppet/parser/functions/mysql_strip_hash.rb:11
   msgid "this is a #{pot_type} string"
   msgstr ""
-          POT
+POT
         end
       end
     end
