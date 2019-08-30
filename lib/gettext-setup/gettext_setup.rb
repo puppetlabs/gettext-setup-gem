@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fast_gettext'
 require 'yaml'
 require 'locale'

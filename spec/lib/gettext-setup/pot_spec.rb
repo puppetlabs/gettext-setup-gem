@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rspec/expectations'
 require 'tmpdir'
 require_relative '../../spec_helper.rb'
@@ -60,7 +62,7 @@ describe GettextSetup::Pot do
       expect(contents).to match(/Fixture locales/)
       expect(contents).to match(/docs@puppetlabs.com/)
       expect(contents).to match(/Puppet, LLC/)
-      expect(contents).to match(/test_strings.rb:1/)
+      expect(contents).to match(/test_strings.rb:3/)
     end
     it 'builds a POT file with :header_only' do
       path = File.join(Dir.mktmpdir, 'new.pot')
