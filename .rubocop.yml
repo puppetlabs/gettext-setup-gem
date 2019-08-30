@@ -51,3 +51,5 @@ Style/ExpandPathArguments:
 
 Gemspec/RequiredRubyVersion:
   Enabled: false
+Style/SafeNavigation:
+  Enabled: false
