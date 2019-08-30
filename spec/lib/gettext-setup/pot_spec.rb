@@ -82,6 +82,8 @@ describe GettextSetup::Pot do
       expect { GettextSetup::Pot.generate_new_po('ja', Dir.mktmpdir, path, po_path) }.to raise_error(NoConfigFoundError)
     end
     it 'complains when no language is supplied' do
+      allow(ENV).to receive(:[]).and_call_original
+      allow(ENV).to receive(:[]).with('LANGUAGE').and_return(nil)
       result = "You need to specify the language to add. Either 'LANGUAGE=eo rake gettext:po' or 'rake gettext:po[LANGUAGE]'\n"
       expect do
         GettextSetup::Pot.generate_new_po(nil, fixture_locales_path, Dir.mktmpdir, Dir.mktmpdir)
