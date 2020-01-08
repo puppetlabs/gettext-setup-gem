@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 1.9.2'
 
   spec.add_dependency 'fast_gettext', '~> 1.1.0'
-  spec.add_dependency 'gettext', '>= 3.0.2'
+  spec.add_dependency 'gettext', ['>= 3.0.2', '< 3.3.0']
   spec.add_dependency 'locale'
 
   spec.add_development_dependency 'bundler'
