@@ -67,7 +67,7 @@ E.g. `n_("There is %{count} bicycle in %{city}", "There are %{count} bicycles in
 
 Pluralization rules vary across languages. The pluralization rules are specified in the PO file and look something like this `Plural-Forms: nplurals=2; plural=(n > 1);`. This is the pluralization rule for German. It means that German has two pluralization rules. The first rule is `plural=n > 1)` and the second rule is all other counts.
 
-Plurals are selected from the PO file by index. 
+Plurals are selected from the PO file by index.
 
 Here's an example of how a pluralized string is handled in a PO file:
 
@@ -84,7 +84,7 @@ The `msgid_plural` is the plural version of the English source string.
 
 The two `msgstr` lines show that German has two rules for pluralization. The indices map to the `Plural-Forms: nplurals=2; plural=(n > 1);` rule that we specified in the PO file. The `[0]` index represents `plural=(n > 1)` and the `[1]` index represents all other pluralization cases (in other words, when the count equals 0 or 1).
 
-When Transifex generates a PO file for a specific language, it automatically adds the appropriate pluralization rules in the PO file. 
+When Transifex generates a PO file for a specific language, it automatically adds the appropriate pluralization rules in the PO file.
 
 ### Comments
 To provide translators with some contextual information or instructions about a string, precede the string with a comment using `#. `. The comment gets pulled in to the POT file and will show up as a comment in Transifex.
@@ -99,7 +99,7 @@ E.g. `#. The placeholder in this string represents the name of a parameter.`
 
 3. When a POT file is updated, the Transifex webhook pushes the new POT file to Transifex ready for translation. (If your POT file hasn't been added to the Transifex integration yet, you will need to get it added.)
 
-4. When a PO file reaches 100% translated and reviewed, a webhook pushes it back to the source repo ready to be consumed by your app. 
+4. When a PO file reaches 100% translated and reviewed, a webhook pushes it back to the source repo ready to be consumed by your app.
 
 5. Your app checks the user's locale settings (the browser settings for web apps, or the system settings for the CLI). If we support the user's preferred locale, the app will display strings in the user's language. Otherwise, it defaults to English.
 
@@ -113,3 +113,7 @@ This task will run within the gettext setup locales_path provided by GettextSetu
 By default, the merged pot file is locales_path/project_name.pot. This can be overridden when calling the method by providing a chosen path.
 
 Please note: Since the default merged file name is project_name.pot, it will override anything of that name within the locales directory.
+
+## Making releases
+
+Add the tag you wish to release (via the bot in the release channel is preferred) and then `gem build gettext-setup.gemspec` and then `gem push gettext-setup-<version>.gem`. (you will need to be an owner to push).
