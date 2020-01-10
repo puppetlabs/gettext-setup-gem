@@ -53,3 +53,6 @@ Gemspec/RequiredRubyVersion:
   Enabled: false
 Style/SafeNavigation:
   Enabled: false
+
+Lint/SendWithMixinArgument:
+  Enabled: false
