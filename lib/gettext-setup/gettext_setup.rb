@@ -25,7 +25,7 @@ module GettextSetup
     GettextSetup.initialize_config(locales_path)
 
     # Make the translation methods available everywhere
-    Object.include FastGettext::Translation
+    Object.send(:include, FastGettext::Translation)
 
     # Define our text domain, and set the path into our root.  I would prefer to
     # have something smarter, but we really want this up earlier even than our
