@@ -15,7 +15,8 @@ jobs:
       matrix:
         include:
           - ruby: "2.5"
-          - ruby: "3.2.0-preview1"
+          - ruby: "3.2"
+          - ruby: "3.3"
     steps:
       - uses: actions/checkout@v2
       - name: Install Ruby ${{ matrix.ruby }}
